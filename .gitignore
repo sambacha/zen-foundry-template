@@ -1,7 +1,27 @@
 # -*- mode: gitignore; -*-
 /out
-.DS_Store
-node_modules
 cache/
 artifacts
 coverage/
+
+## General ##
+*~
+\#*\#
+/**/build
+.DS_Store
+node_modules
+tmp/
+_dev/
+
+## Binary ##
+*.zip
+*.tar
+*.tar.gz
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
