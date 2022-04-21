@@ -1,5 +1,6 @@
 # -*- mode: gitignore; -*-
 /out
+/dist 
 cache/
 artifacts
 coverage/
@@ -12,11 +13,17 @@ coverage/
 node_modules
 tmp/
 _dev/
+coverage/
 
 ## Binary ##
 *.zip
 *.tar
 *.tar.gz
+*.tgz
+
+## IDE ##
+.secret
+.idea/*
 
 ### VisualStudioCode ###
 .vscode/*
