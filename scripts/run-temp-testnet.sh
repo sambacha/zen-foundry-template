@@ -28,4 +28,4 @@ sleep 3
 export ETH_RPC_URL=http://127.0.0.1:8545
 
 # get the created account (it's unlocked so we only need to set the address)
-export ETH_FROM=$(seth ls --keystore $TMPDIR/8545/keystore | cut -f1)
+export ETH_FROM=$(cast ls --keystore $TMPDIR/8545/keystore | cut -f1)

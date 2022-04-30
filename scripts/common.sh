@@ -41,8 +41,8 @@ if [[ -z ${ETH_FROM} ]]; then
 fi
 
 # Make sure address is checksummed
-if [ "$ETH_FROM" != "$(seth --to-checksum-address "$ETH_FROM")" ]; then
-  echo "ETH_FROM not checksummed, please format it with 'seth --to-checksum-address <address>'"
+if [ "$ETH_FROM" != "$(cast --to-checksum-address "$ETH_FROM")" ]; then
+  echo "ETH_FROM not checksummed, please format it with 'cast --to-checksum-address <address>'"
   exit 1
 fi
 
@@ -68,13 +68,13 @@ deploy() {
 
   # get the constructor's signature
   ABI=$(jq -r "$PATTERN.abi" out/dapp.sol.json)
-  SIG=$(echo "$ABI" | seth --abi-constructor)
+  SIG=$(echo "$ABI" | cast --abi-constructor)
 
   # get the bytecode from the compiled file
   BYTECODE=0x$(jq -r "$PATTERN.evm.bytecode.object" out/dapp.sol.json)
 
   # estimate gas
-  GAS=$(seth estimate --create "$BYTECODE" "$SIG" $ARGS --rpc-url "$ETH_RPC_URL")
+  GAS=$(cast estimate --create "$BYTECODE" "$SIG" $ARGS --rpc-url "$ETH_RPC_URL")
 
   # deploy
   ADDRESS=$(dapp create "$NAME" $ARGS -- --gas "$GAS" --rpc-url "$ETH_RPC_URL")
@@ -106,12 +106,12 @@ estimate_gas() {
 
   # get the constructor's signature
   ABI=$(jq -r "$PATTERN.abi" out/dapp.sol.json)
-  SIG=$(echo "$ABI" | seth --abi-constructor)
+  SIG=$(echo "$ABI" | cast --abi-constructor)
 
   # get the bytecode from the compiled file
   BYTECODE=0x$(jq -r "$PATTERN.evm.bytecode.object" out/dapp.sol.json)
   # estimate gas
-  GAS=$(seth estimate --create "$BYTECODE" "$SIG" $ARGS --rpc-url "$ETH_RPC_URL")
+  GAS=$(cast estimate --create "$BYTECODE" "$SIG" $ARGS --rpc-url "$ETH_RPC_URL")
 
   TXPRICE_RESPONSE=$(curl -sL https://api.txprice.com/v1)
   response=$(jq '.code' <<<"$TXPRICE_RESPONSE")

@@ -12,11 +12,11 @@ set -eo pipefail
 addr=$(jq -r '.Greeter' out/addresses.json)
 
 # the initial greeting must be empty
-greeting=$(seth call $addr 'greeting()(string)')
+greeting=$(cast call $addr 'greeting()(string)')
 [[ $greeting = "" ]] || error
 
 # set it to a value
-seth send $addr \
+cast send $addr \
   'greet(string memory)' '"yo"' \
   --keystore $TMPDIR/8545/keystore \
   --password /dev/null
@@ -24,7 +24,7 @@ seth send $addr \
 sleep 1
 
 # should be set afterwards
-greeting=$(seth call $addr 'greeting()(string)')
+greeting=$(cast call $addr 'greeting()(string)')
 [[ $greeting = "yo" ]] || error
 
 echo "Success."
