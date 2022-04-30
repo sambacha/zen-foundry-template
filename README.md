@@ -20,3 +20,44 @@ touch .env
 git commit -n -m "feat(release): inital commit"
 ```
 
+## Example Contract Documentation
+
+# Contract
+
+## Options --
+
+## Classes --
+
+
+## abstractLibrary
+
+### Inheritance --
+
+### usingFor --
+
+### Vars --
+
+### Methods
+
+	🔍str_concat() _a _b
+	🔍str_concat() _a _b _c
+	🔍str_concat() _a _b _c _d
+	🔍str_concat() _a _b _c _d _e
+	🔍str_concat() _a _b _c _d _e _f
+	🔍str_concat() _a _b _c _d _e _f _g
+	🔍str_concat() _a _b _c _d _e _f _g _h
+
+		string memory _a,
+        string memory _b,
+        string memory _c,
+        string memory _d,
+        string memory _e,
+        string memory _f,
+        string memory _g,
+        string memory _h
+
+	🔍int_to_string()
+	🔍to_ascii_string()
+	🔍char()
+
+## Versioning
