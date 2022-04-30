@@ -1,0 +1,19 @@
+{
+	"telemetry.enableTelemetry": false,
+	"telemetry.telemetryLevel": "off",
+	"telemetry.enableCrashReporter": false,
+	"editor.formatOnSave": false,
+	"files.associations": {
+		".dapprc": "shellscript",
+		".gas-snapshot": "julia",
+		"*.hbs": "handlebars"
+	},
+	"github.copilot.enable": {
+		".env": false,
+		"yaml": false,
+		"plaintext": false,
+		"env": false,
+		"key": false
+    "keystore.*": false
+	}
+}
