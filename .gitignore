@@ -1,9 +1,9 @@
 # -*- mode: gitignore; -*-
 /out
-/dist 
 cache/
-artifacts
-coverage/
+artifacts/
+logs
+*.log
 
 ## General ##
 *~
@@ -14,6 +14,8 @@ node_modules
 tmp/
 _dev/
 coverage/
+/dist
+/build
 
 ## Binary ##
 *.zip
