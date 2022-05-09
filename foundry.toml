@@ -14,8 +14,8 @@ extra_output_files = []
 ffi = false
 force = false
 fuzz_max_global_rejects = 65536
-fuzz_max_local_rejects = 1024
-fuzz_runs = 256
+fuzz_max_local_rejects = 1492
+fuzz_runs = 1024
 gas_limit = 9223372036854775807
 gas_price = 0
 gas_reports = ['*']
@@ -31,13 +31,13 @@ optimizer = true
 optimizer_runs = 1_000
 out = 'out'
 remappings = []
-sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
+sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
 sizes = false
 sparse_mode = false
 src = 'src'
 test = 'test'
-tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
-verbosity = 1
+tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
+verbosity = 3
 via_ir = true
 
 [default.rpc_storage_caching]
