@@ -20,6 +20,26 @@ touch .env
 git commit -n -m "feat(release): inital commit"
 ```
 
+### The base fuzzing account
+```
+0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0
+```
+### An account with 0 ETH
+```
+0xAaAAAaaAAAAAAaaAAAaaaaAaAaAAAAaAAaAaAaA1
+```
+
+### An account with a lot of ETH
+```
+0xAaAaaAAAaAaaAaAaAaaAAaAaAAAAAaAAAaaAaAa2
+```
+
+### The creator account 
+```
+0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE
+```
+
+
 ## Example Contract Documentation
 
 # Contract
