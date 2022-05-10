@@ -12,6 +12,7 @@ trim_trailing_whitespace = true
 
 [*.sol]
 indent_size = 4
+indent_style = space
 
 # Markdown
 [*.{md,adoc,asciidoc}]
@@ -32,12 +33,6 @@ indent_size = 2
 indent_size = 2
 indent_style = space
 
-# HTML
-# https://google.github.io/styleguide/htmlcssguide.xml#General_Formatting_Rules
-[*.{htm,html}]
-indent_size = 2
-indent_style = space
-trim_trailing_whitespace = true
 # TOML
 # https://github.com/toml-lang/toml/tree/master/examples
 [*.toml]
@@ -69,7 +64,6 @@ trim_trailing_whitespace    = true
 # Match diffs, avoid to trim trailing whitespace
 [*.{diff,patch}]
 trim_trailing_whitespace = false
-
 
 # Ignore fixtures and vendored files
 [{dist,artifacts,vendor,test/fixtures}/**]
