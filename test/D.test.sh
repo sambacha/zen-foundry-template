@@ -9,12 +9,14 @@ export LANG LC_ALL PAGER TZ EDITOR
 unset VISUAL CDPATH GREP_OPTIONS
 
 [ "x$TERM" != "xdumb" ] && (
-		[ -t 1 ] &&
-		tput bold >/dev/null 2>&1 &&
-		tput setaf 1 >/dev/null 2>&1 &&
-		tput sgr0 >/dev/null 2>&1
-	) &&
-	color=t
+  [ -t 1 ] &&
+    tput bold >/dev/null 2>&1 &&
+    tput setaf 1 >/dev/null 2>&1 &&
+    tput sgr0 >/dev/null 2>&1
+) &&
+  color=t
 
 while test "$#" -ne 0; do
-	case "$1" in
+  case "$1" in
+  esac
+done
