@@ -1,0 +1,21 @@
+{
+  "name": "zen-foundry-template",
+  "version": "1.0.0",
+  "description": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sambacha/zen-foundry-template.git"
+  },
+  "keywords": [],
+  "author": "SEE CONTRIBUTORS",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/sambacha/zen-foundry-template/issues"
+  },
+  "homepage": "https://github.com/sambacha/zen-foundry-template#readme"
+}

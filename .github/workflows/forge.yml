@@ -1,0 +1,40 @@
+# foundry workflow
+name: forge
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*.*.*'
+  pull_request:
+
+
+env:
+  COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+  PULL_NUMBER: ${{ github.event.pull_request.number }}
+  RUN_ID: ${{ github.run_id }}
+  FORCE_COLOR: 2
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest']
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: onbjerg/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Run Tests
+        id: forge_tests
+        run: FOUNDRY_PROFILE=ci forge test

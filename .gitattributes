@@ -1,0 +1,21 @@
+# -*- mode: gitattributes; -*-
+justfile      linguist-language=Make
+*.t.sol.      linguist-language=Solidity
+.dapprc       linguist-language=Shell
+.gas-snapshot linguist-language=Julia
+
+VERSION export-subst
+git-hash export-subst
+
+*.sh text eol=lf
+*.sol text eol=lf
+
+# git archive ignore 
+/.github            export-ignore
+/.editorconfig      export-ignore
+/.gitattributes     export-ignore
+/.gitignore         export-ignore
+/test               export-ignore
+
+# avoid merge conflicts in CHANGELOG
+/CHANGELOG.md		merge=union
