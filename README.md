@@ -2,6 +2,11 @@
 
 > a minimalist foundry boilerplate
 
+```bash
+
+forge init --template https://github.com/sambacha/zen-foundry-template
+```
+
 <h3> template.script </h3>
 
 ```shell
