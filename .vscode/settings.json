@@ -1,19 +1,24 @@
 {
-	"telemetry.enableTelemetry": false,
-	"telemetry.telemetryLevel": "off",
-	"telemetry.enableCrashReporter": false,
-	"editor.formatOnSave": false,
-	"files.associations": {
-		".dapprc": "shellscript",
-		".gas-snapshot": "julia",
-		"*.hbs": "handlebars"
-	},
-	"github.copilot.enable": {
-		".env": false,
-		"yaml": false,
-		"plaintext": false,
-		"env": false,
-		"key": false
-    "keystore.*": false
-	}
+"telemetry.enableTelemetry": false,
+"telemetry.telemetryLevel": "off",
+"telemetry.enableCrashReporter": false,
+"editor.formatOnSave": false,
+"files.associations": {
+	".dapprc": "shellscript",
+	".gas-snapshot": "julia",
+	"*.hbs": "handlebars"
+},
+  "github.copilot.enable":{
+    "*": true, 
+    "*.env": false,
+    "*.key": false, 
+    "?*env": false, 
+    "env_*": false, 
+    "?*key": false,
+    "?*ssh": false, 
+    "id_*": false,
+    "yaml": true,
+    "plaintext": false,
+    "markdown": true
+    },
 }
