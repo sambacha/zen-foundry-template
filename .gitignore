@@ -5,6 +5,9 @@ artifacts/
 logs
 *.log
 
+## CVE-2021-21300 style exploits
+.#*
+
 ## General ##
 *~
 \#*\#
