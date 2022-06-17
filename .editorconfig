@@ -10,6 +10,8 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# Solidity
+# https://github.com/sambacha/prettier-config-solidity
 [*.sol]
 indent_size = 4
 indent_style = space
@@ -29,7 +31,7 @@ indent_size = 2
 # JavaScript, JSON, JSX, JavaScript Modules, TypeScript
 # https://github.com/feross/standard
 # https://prettier.io
-[*.{cjs,js,json,jsx,mjs,ts,tsx}]
+[*.{cjs,js,json,jsx,mjs,ts,tsx,mts,cts}]
 indent_size = 2
 indent_style = space
 
@@ -66,7 +68,7 @@ trim_trailing_whitespace    = true
 trim_trailing_whitespace = false
 
 # Ignore fixtures and vendored files
-[{dist,artifacts,vendor,test/fixtures}/**]
+[{dist,artifacts,vendor,test/fixtures,tests_config,__snapshot__,}/**]
 charset = unset
 end_of_line = unset
 indent_size = unset
