@@ -1,4 +1,5 @@
 [default]
+allow_paths = []
 auto_detect_solc = true
 block_base_fee_per_gas = 0
 block_coinbase = '0x0000000000000000000000000000000000000000'
@@ -19,7 +20,15 @@ fuzz_runs = 1024
 gas_limit = 9223372036854775807
 gas_price = 0
 gas_reports = ['*']
-ignored_error_codes = [1878]
+# ignored_error_codes
+# 2018 Function state mutability can be restricted to pure
+# 3420 Source file does not specify required compiler version!
+ignored_error_codes = [
+1878,
+2018,
+3420, 
+5574,
+]
 initial_balance = '0xffffffffffffffffffffffff'
 libraries = []
 libs = ['lib']
