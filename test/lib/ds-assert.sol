@@ -1,23 +1,23 @@
 /// SPDX-License-Identifier: Apache-2.0 OR MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.15;
 
 import "./ds-test.sol";
 
-/**
-* @title ds-test/assert
-* @notice Extends ds-test with additional generic assertions + revert checks
-* @custom:version 2022.05 
-* @custom:contributors Michael Pouy, Vincenzo Palazzo, Daniel Cousens, Gerasimos Maropoulos
-*/
+//
+// @title ds-test/assert
+// @notice Extends ds-test with additional generic assertions + revert checks
+// @custom:version 2022.05 
+// @custom:contributors Michael Pouy, Vincenzo Palazzo, Daniel Cousens, Gerasimos Maropoulos
+//
 
 contract DSAssert is DSTest {
 
-    /** 
-    * @custom:function assertErrorWithMessage
-    * @notice Calls function and checks for matching revert message
-    * @param erroringFunction to call
-    * @param message to check against revert error string
-    */
+    // 
+    // @custom:function assertErrorWithMessage
+    // @notice Calls function and checks for matching revert message
+    // @param erroringFunction to call
+    // @param message to check against revert error string
+    //
     function assertErrorWithMessage(
         function() external erroringFunction,
         string memory message
@@ -30,13 +30,13 @@ contract DSAssert is DSTest {
         }
     }
 
-    /**
-    * @custom:function assertErrorWithMessageParams
-    * @notice Calls function and checks for matching revert message
-    * @param erroringFunction to call
-    * @param param to pass to function
-    * @param message to check against revert error string
-    */
+    //
+    // @custom:function assertErrorWithMessageParams
+    // @notice Calls function and checks for matching revert message
+    // @param erroringFunction to call
+    // @param param to pass to function
+    // @param message to check against revert error string
+    //
     function assertErrorWithMessageParams(
         function(uint256) external erroringFunction,
         uint256 param,
@@ -51,13 +51,13 @@ contract DSAssert is DSTest {
     }
 
 
-    /**
-     * @custom:function assertErrorWithMessageMulti
-     * @notice Calls function and checks for matching revert message
-     * @param erroringFunction to call
-     * @param params to pass to function
-     * @param message to check against revert error string
-     */
+    //
+     // @custom:function assertErrorWithMessageMulti
+     // @notice Calls function and checks for matching revert message
+     // @param erroringFunction to call
+     // @param params to pass to function
+     // @param message to check against revert error string
+     //
         function assertErrorWithMessageMulti(
             function(uint256[] memory) external erroringFunction,
             uint256[] memory params,
@@ -72,14 +72,14 @@ contract DSAssert is DSTest {
      }
 
 
-    /**
-    * @custom:function assertErrorWithMessagePayable
-    * @notice Calls function and checks for matching revert message (with value)
-    * @param erroringFunction to call
-    * @param param to pass to function
-    * @param value to pass with function call
-    * @param message to check against revert error string
-    */
+    //
+    // @custom:function assertErrorWithMessagePayable
+    // @notice Calls function and checks for matching revert message (with value)
+    // @param erroringFunction to call
+    // @param param to pass to function
+    // @param value to pass with function call
+    // @param message to check against revert error string
+    //
     function assertErrorWithMessagePayable(
         function(uint256) payable external erroringFunction,
         uint256 param,
@@ -94,16 +94,13 @@ contract DSAssert is DSTest {
         }
     }
 
-    // NOTE: not provided in ds-test
-    /**
-     * @custom:function assertEqApprox
-     * @param uint256 
-     * @param _a 
-     * @param uint256 
-     * @param _b 
-     * @param uint256 
-     * @param _tolerance 
-     */
+     // @custom:function assertEqApprox
+     // @param uint256 
+     // @param _a 
+     // @param uint256 
+     // @param _b 
+     // @param uint256 
+     // @param _tolerance 
     function assertEqApprox(uint256 _a, uint256 _b, uint256 _tolerance) internal {
         uint256 a = _a;
         uint256 b = _b;
