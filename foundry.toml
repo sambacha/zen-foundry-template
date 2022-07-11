@@ -49,6 +49,9 @@ test = 'test'
 tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
 verbosity = 3
 via_ir = true
+stackAllocation = true
+optimizerSteps = ''
+
 
 [default.rpc_storage_caching]
 chains = 'all'
