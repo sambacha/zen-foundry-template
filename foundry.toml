@@ -1,6 +1,5 @@
-[default]
+[profile.default]
 allow_paths = ['interfaces', 'contracts', 'src']
-
 auto_detect_solc = true
 block_base_fee_per_gas = 0
 block_coinbase = '0x0000000000000000000000000000000000000000'
@@ -22,27 +21,28 @@ ffi = false
 force = false
 fuzz_max_global_rejects = 65_536
 fuzz_max_local_rejects = 16_384
-
-# The number of test cases that must execute for each property test
 fuzz_runs = 512
 
 # This is an Option, so we can determine in fork mode whether to use the config's gas price
 # (if set by user) or the remote client's gas price Option<u64>
 gas_price = 10
 gas_limit = 9223372036854775807
+block_base_fee_per_gas = 0
 gas_reports = ['*']
 
-# ignored_error_codes
+# Ignored Error codes
 # 2018 Function state mutability can be restricted to pure
-# 3420 Source file does not specify required compiler version!
+# 3420 Source file does not specify required compiler version
+# 3716 Multiple SPDX license identifiers found in source file
 ignored_error_codes = [
 	1878,
 	2018,
 	3420,
+  3716,
 ]
+
 initial_balance = '0xffffffffffffffffffffffff'
 libraries = []
-
 libs = [
 	'lib',
 	'node_modules',
@@ -63,6 +63,7 @@ script = 'script'
 sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
 sizes = false
 sparse_mode = false
+build_info = false
 src = 'contracts'
 test = 'contracts/test'
 tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
@@ -73,7 +74,7 @@ revert_strings = "debug"
 optimizer = true
 optimizer_runs = 1_337
 
-[default.rpc_storage_caching]
+[profile.default.rpc_storage_caching]
 chains = 'all'
 endpoints = 'all'
 
@@ -82,6 +83,11 @@ optimizer = false
 fuzz_runs = 4069
 force = true
 verbosity = 4
+
+#[fmt]
+#line_length = 80
+#tab_width = 4
+#bracket_spacing = false
 
 # [default.model_checker]
 # contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
