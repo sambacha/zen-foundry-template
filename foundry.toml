@@ -68,17 +68,19 @@ src = 'contracts'
 test = 'contracts/test'
 tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
 verbosity = 2
+# optimizer settings
 via_ir = true
 # revert_strings = "verboseDebug"
 revert_strings = "debug"
 optimizer = true
 optimizer_runs = 1_337
+optimizerSteps = ''
 
 [profile.default.rpc_storage_caching]
 chains = 'all'
 endpoints = 'all'
 
-[ci]
+[profile.ci]
 optimizer = false
 fuzz_runs = 4069
 force = true
