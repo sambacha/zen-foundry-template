@@ -35,46 +35,54 @@ gas_reports = ['*']
 # 3420 Source file does not specify required compiler version
 # 3716 Multiple SPDX license identifiers found in source file
 ignored_error_codes = [
-	1878,
-	2018,
-	3420,
+  1878,
+  2018,
+  3420,
   3716,
 ]
 
 initial_balance = '0xffffffffffffffffffffffff'
-libraries = []
-libs = [
-	'lib',
-	'node_modules',
-]
+sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
+tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
 memory_limit = 33554432
 names = false
 no_storage_caching = false
 offline = false
-out = 'out'
 
-remappings = [
-	'@openzeppelin/=node_modules/@openzeppelin/',
-	'@uniswap/=node_modules/@uniswap/',
-	'ds-test/=lib/forge-std/lib/ds-test/src/',
-	'forge-std/=lib/forge-std/src/',
-]
+# repo layout
+# src = 'contracts'
+# test = 'contracts/test'
+src = 'src'
+test = 'test'
 script = 'script'
-sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
-sizes = false
-sparse_mode = false
+out = 'out'
+libraries = []
+libs = [
+  'lib',
+  'node_modules',
+]
+remappings = [
+  '@openzeppelin/=node_modules/@openzeppelin/',
+  '@uniswap/=node_modules/@uniswap/',
+  'ds-test/=lib/forge-std/lib/ds-test/src/',
+  'forge-std/=lib/forge-std/src/',
+]
+
+# compiler settings
 build_info = false
-src = 'contracts'
-test = 'contracts/test'
-tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
 verbosity = 2
-# optimizer settings
 via_ir = true
 # revert_strings = "verboseDebug"
 revert_strings = "debug"
 optimizer = true
 optimizer_runs = 1_337
 optimizerSteps = ''
+sizes = false
+sparse_mode = false
+ignored_error_codes = [
+  'license',
+]
+fs_permissions = []
 
 [profile.default.rpc_storage_caching]
 chains = 'all'
@@ -86,10 +94,27 @@ fuzz_runs = 4069
 force = true
 verbosity = 4
 
-#[fmt]
-#line_length = 80
-#tab_width = 4
-#bracket_spacing = false
+[fuzz]
+runs = 256
+max_test_rejects = 65536
+max_global_rejects = 65536
+dictionary_weight = 40
+include_storage = true
+include_push_bytes = true
+
+[invariant]
+runs = 256
+depth = 15
+fail_on_revert = false
+call_override = false
+dictionary_weight = 80
+include_storage = true
+include_push_bytes = true
+
+# [fmt]
+# line_length = 80
+# tab_width = 4
+# bracket_spacing = false
 
 # [default.model_checker]
 # contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
