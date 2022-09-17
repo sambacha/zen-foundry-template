@@ -16,12 +16,8 @@ evm_version = 'london'
 extra_output = []
 # emits the output selection as separate json artifact files
 extra_output_files = ['metadata']
-
 ffi = false
 force = false
-fuzz_max_global_rejects = 65_536
-fuzz_max_local_rejects = 16_384
-fuzz_runs = 512
 
 # This is an Option, so we can determine in fork mode whether to use the config's gas price
 # (if set by user) or the remote client's gas price Option<u64>
@@ -44,7 +40,7 @@ ignored_error_codes = [
 initial_balance = '0xffffffffffffffffffffffff'
 sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
 tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
-memory_limit = 33554432
+memory_limit = 33_554_432
 names = false
 no_storage_caching = false
 offline = false
@@ -83,6 +79,7 @@ ignored_error_codes = [
   'license',
 ]
 fs_permissions = []
+fuzz_runs = 512
 
 [profile.default.rpc_storage_caching]
 chains = 'all'
@@ -90,20 +87,22 @@ endpoints = 'all'
 
 [profile.ci]
 optimizer = false
-fuzz_runs = 4069
+fuzz_runs = 4_069
 force = true
 verbosity = 4
 
 [fuzz]
-runs = 256
-max_test_rejects = 65536
-max_global_rejects = 65536
+runs = 768
+max_test_rejects = 65_536
+max_local_rejects = 16_384
+max_global_rejects = 81_920
 dictionary_weight = 40
 include_storage = true
 include_push_bytes = true
 
+
 [invariant]
-runs = 256
+runs = 320
 depth = 15
 fail_on_revert = false
 call_override = false
