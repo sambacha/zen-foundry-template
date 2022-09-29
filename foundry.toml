@@ -1,7 +1,7 @@
+# v2022.10.01
 [profile.default]
 allow_paths = ['interfaces', 'contracts', 'src']
 auto_detect_solc = true
-block_base_fee_per_gas = 0
 block_coinbase = '0x0000000000000000000000000000000000000000'
 block_difficulty = 0
 block_number = 1
@@ -10,13 +10,12 @@ broadcast = 'broadcast'
 bytecode_hash = 'none'
 cache = true
 cache_path = 'cache'
-evm_version = 'london'
 
 # includes the contract's metadata in the contract's json artifact
 extra_output = []
 # emits the output selection as separate json artifact files
 extra_output_files = ['metadata']
-ffi = false
+ffi = true
 force = false
 
 # This is an Option, so we can determine in fork mode whether to use the config's gas price
@@ -25,6 +24,7 @@ gas_price = 10
 gas_limit = 9223372036854775807
 block_base_fee_per_gas = 0
 gas_reports = ['*']
+evm_version = 'london'
 
 # Ignored Error codes
 # 2018 Function state mutability can be restricted to pure
@@ -58,10 +58,11 @@ libs = [
   'node_modules',
 ]
 remappings = [
-  '@openzeppelin/=node_modules/@openzeppelin/',
-  '@uniswap/=node_modules/@uniswap/',
-  'ds-test/=lib/forge-std/lib/ds-test/src/',
+  'ds-test/=lib/ds-test/src/',
   'forge-std/=lib/forge-std/src/',
+  'prb-test/=lib/prb-test/src/',
+  'solmate/=lib/solmate/src/',
+  'test-utils/=lib/test-utils/src/',
 ]
 
 # compiler settings
@@ -75,9 +76,6 @@ optimizer_runs = 1_337
 optimizerSteps = ''
 sizes = false
 sparse_mode = false
-ignored_error_codes = [
-  'license',
-]
 fs_permissions = []
 fuzz_runs = 512
 
@@ -96,17 +94,16 @@ runs = 768
 max_test_rejects = 65_536
 max_local_rejects = 16_384
 max_global_rejects = 81_920
-dictionary_weight = 40
+dictionary_weight = 42
 include_storage = true
 include_push_bytes = true
 
-
 [invariant]
 runs = 320
-depth = 15
+depth = 18
 fail_on_revert = false
 call_override = false
-dictionary_weight = 80
+dictionary_weight = 84
 include_storage = true
 include_push_bytes = true
 
