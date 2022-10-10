@@ -1,6 +1,6 @@
 #!/usr/bin/env just --justfile
 # @title Foundry Justfile
-# @version: 0.4.3
+# @version: 0.4.4
 # @license UPL-1.0
 # @see {@link https://github.com/sambacha/foundry-scripts}
 
@@ -11,7 +11,7 @@ export RUST_LOG := et
 log := "warn"
 export JUST_LOG := log
 
-# RUST_LOG=node,backend,api,rpc=warn anvil 
+# RUST_LOG=node,backend,api,rpc=warn anvil
 _default:
     just --list
 
@@ -34,12 +34,6 @@ set dotenv-load := true
 # pass justfile recipe args as positional arguments to commands
 
 set positional-arguments := true
-
-# sourced from https://github.com/sense-finance/sense-v1
-
-DAPP_BUILD_OPTIMIZE := "1"
-DAPP_COVERAGE := "1"
-DAPP_TEST_FUZZ_RUNS := "100"
 
 # 1e18 decimals
 
@@ -68,9 +62,9 @@ set export := true
 size:
     forge build --sizes --force
 
-# [DEPLOY]: Environemtn Config
+# [DEPLOY]: Env Config
 
-DEPLOYED_ADDRESS := "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+DEPLOYED_ADDRESS := ''
 CONTRACT_NAME := ''
 ETHERSCAN_API_KEY := ''
 
