@@ -1,4 +1,4 @@
-# v2022.10.01
+# v2022.10.10
 [profile.default]
 allow_paths = ['interfaces', 'contracts', 'src']
 auto_detect_solc = true
@@ -91,12 +91,15 @@ verbosity = 4
 
 [fuzz]
 runs = 768
+depth = 15
 max_test_rejects = 65_536
 max_local_rejects = 16_384
 max_global_rejects = 81_920
-dictionary_weight = 42
+dictionary_weight = 80
 include_storage = true
 include_push_bytes = true
+fail_on_revert = false
+call_override = false
 
 [invariant]
 runs = 320
