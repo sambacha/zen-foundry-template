@@ -90,11 +90,12 @@ force = true
 verbosity = 4
 
 [fuzz]
-runs = 768
-depth = 15
-max_test_rejects = 65_536
+runs = 896
+depth = 21
+#max_test_rejects = 65_536
+#max_global_rejects = 81_920
+max_test_rejects = 81_920
 max_local_rejects = 16_384
-max_global_rejects = 81_920
 dictionary_weight = 80
 include_storage = true
 include_push_bytes = true
