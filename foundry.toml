@@ -103,11 +103,11 @@ fail_on_revert = false
 call_override = false
 
 [invariant]
-runs = 320
-depth = 18
+runs = 512
+depth = 20
 fail_on_revert = false
 call_override = false
-dictionary_weight = 84
+dictionary_weight = 85
 include_storage = true
 include_push_bytes = true
 
