@@ -11,7 +11,7 @@ forge init --template https://github.com/sambacha/zen-foundry-template
 
 ```shell
 #!/bin/sh
-GIT_AUTHOR_DATE="Fri, 01 Jan 2021 00:00:00 +0000" GIT_COMMITTER_DATE="Fri, 01 Jan 2021 00:00:00 +0000" git commit --allow-empty --allow-empty-message -m ''
+GIT_AUTHOR_DATE="Sun, 01 Jan 2023 00:00:00 +0000" GIT_COMMITTER_DATE="Sun, 01 Jan 2023 00:00:00 +0000" git commit --allow-empty --allow-empty-message -m ''
 wget https://raw.githubusercontent.com/sambacha/zen-foundry-template/master/.gitignore
 wget https://raw.githubusercontent.com/sambacha/zen-foundry-template/master/.gitattributes
 wget https://raw.githubusercontent.com/sambacha/zen-foundry-template/master/.editorconfig
