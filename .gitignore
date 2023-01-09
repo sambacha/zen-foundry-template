@@ -5,7 +5,7 @@ artifacts/
 logs
 *.log
 !/broadcast
-/broadcast/*
+/broadcast/*.json
 /broadcast/*/31337/
 
 ## CVE-2021-21300 style exploits
