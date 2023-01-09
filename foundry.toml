@@ -3,6 +3,8 @@
 allow_paths = ['interfaces', 'contracts', 'src']
 auto_detect_solc = true
 block_coinbase = '0x0000000000000000000000000000000000000000'
+block_prevrandao = '0x0000000000000000000000000000000000000000000000000000000000000000'
+
 block_difficulty = 0
 block_number = 1
 block_timestamp = 1
@@ -36,7 +38,7 @@ ignored_error_codes = [
 	3420,
 	3716,
 ]
-
+deny_warnings = false
 initial_balance = '0xffffffffffffffffffffffff'
 sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
 tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
