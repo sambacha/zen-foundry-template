@@ -1,24 +1,32 @@
 {
-"telemetry.enableTelemetry": false,
-"telemetry.telemetryLevel": "off",
-"telemetry.enableCrashReporter": false,
-"editor.formatOnSave": false,
-"files.associations": {
-	".dapprc": "shellscript",
-	".gas-snapshot": "julia",
-	"*.hbs": "handlebars"
-},
-  "github.copilot.enable":{
-    "*": true, 
+  "telemetry.enableTelemetry": false,
+  "telemetry.telemetryLevel": "off",
+  "telemetry.enableCrashReporter": false,
+  "editor.formatOnSave": false,
+  "files.associations": {
+    ".dapprc": "shellscript",
+    ".gas-snapshot": "julia",
+    "*.hbs": "handlebars"
+  },
+  "github.copilot.enable": {
+    "*": true,
     "*.env": false,
-    "*.key": false, 
-    "?*env": false, 
-    "env_*": false, 
+    "*.key": false,
+    "?*env": false,
+    "env_*": false,
     "?*key": false,
-    "?*ssh": false, 
+    "?*ssh": false,
     "id_*": false,
     "yaml": true,
     "plaintext": false,
     "markdown": true
-    },
+  },
+  "coverage-gutters.coverageFileNames": [
+    "coverage/tests.lcov",
+    "lcov.info",
+    "cov.xml",
+    "coverage.xml",
+    "jacoco.xml",
+    "coverage.cobertura.xml"
+  ]
 }
