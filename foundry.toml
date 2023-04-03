@@ -1,32 +1,25 @@
 # -*- mode: toml; -*-
 [profile.default]
 allow_paths = ['interfaces', 'contracts', 'src']
-auto_detect_solc = true
-block_coinbase = '0x0000000000000000000000000000000000000000'
-block_prevrandao = '0x0000000000000000000000000000000000000000000000000000000000000000'
-
-block_difficulty = 0
-block_number = 1
-block_timestamp = 1
-broadcast = 'broadcast'
+include_paths = []
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+remappings = []
+auto_detect_remappings = true
+libraries = []
 cache = true
-cache_path = 'cache'
-
-# includes the contract's metadata in the contract's json artifact
-extra_output = ['irOptimized', 'evm.assembly']
-# emits the output selection as separate json artifact files
-extra_output_files = ['metadata']
-
-ffi = true
+cache_path = "cache"
+broadcast = "broadcast"
 force = false
-
-# This is an Option, so we can determine in fork mode whether to use the config's gas price
-# (if set by user) or the remote client's gas price Option<u64>
-gas_price = 10
-gas_limit = 9223372036854775807
-block_base_fee_per_gas = 0
-gas_reports = ['*']
-evm_version = 'london'
+evm_version = "london"
+gas_reports = ["*"]
+gas_reports_ignore = []
+auto_detect_solc = true
+offline = false
+verbosity = 0
 
 # Ignored Error codes
 # 2018 Function state mutability can be restricted to pure
@@ -39,77 +32,79 @@ ignored_error_codes = [
 	3716,
 ]
 deny_warnings = false
-initial_balance = '0xffffffffffffffffffffffff'
+build_info = false
+ffi = false
 sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
 tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
+initial_balance = "0xffffffffffffffffffffffff"
+block_number = 1
+gas_limit = 9223372036854775807
+block_base_fee_per_gas = 0
+block_coinbase = "0x0000000000000000000000000000000000000000"
+block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
+block_timestamp = 1
+block_difficulty = 0
 memory_limit = 33_554_432
+
+# includes the contract's metadata in the contract's json artifact
+extra_output = ['irOptimized', 'evm.assembly']
+# emits the output selection as separate json artifact files
+extra_output_files = ['metadata']
+
 names = false
-no_storage_caching = false
-offline = false
-
-# repo layout
-# src = 'contracts'
-# test = 'contracts/test'
-src = 'src'
-test = 'test'
-script = 'script'
-out = 'out'
-libraries = []
-libs = [
-	'lib',
-	'node_modules',
-]
-remappings = [
-	'ds-test/=lib/ds-test/src/',
-	'forge-std/=lib/forge-std/src/',
-	'prb-test/=lib/prb-test/src/',
-	'solmate/=lib/solmate/src/',
-	'test-utils/=lib/test-utils/src/',
-	'@prb/test/=node_modules/@prb/test/src/',
-]
-
-# compiler settings
-build_info = false
-verbosity = 2
-via_ir = true
-# revert_strings = "verboseDebug"
-revert_strings = "debug"
-optimizer = true
-optimizer_runs = 1_337
-# this may need to be uncommented if viaIR has issues
-# optimizerSteps = ''
-
 sizes = false
-bytecode_hash = 'none'
+optimizer = true
+optimizer_runs = 4_000
+via_ir = false
+no_storage_caching = false
+no_rpc_rate_limit = false
+bytecode_hash = "none"
 cbor_metadata = false
-sparse_mode = true
-
-fuzz_runs = 512
-
-[[profile.default.fs_permissions]]
-access = 'read'
-path = 'out'
-
-[profile.default.rpc_storage_caching]
-chains = 'all'
-endpoints = 'all'
+sparse_mode = false
 
 [profile.ci]
 optimizer = false
 fuzz_runs = 4_069
 force = true
 verbosity = 4
+gas_reports = ["*"]
+
+[[profile.default.fs_permissions]]
+access = "read"
+path = "out"
+
+[profile.default.rpc_storage_caching]
+chains = "all"
+endpoints = "all"
+
+[fmt]
+line_length = 120
+tab_width = 4
+bracket_spacing = false
+int_types = "long"
+multiline_func_header = "attributes_first"
+quote_style = "double"
+number_underscore = "preserve"
+single_line_statement_blocks = "preserve"
+override_spacing = false
+wrap_comments = false
+ignore = []
+contract_new_lines = false
+
+[doc]
+out = "docs"
+title = ""
+book = "book.toml"
+ignore = []
 
 [fuzz]
-runs = 896
-depth = 21
-# max_test_rejects = 65_536
-# max_global_rejects = 81_920
-max_test_rejects = 81_920
-max_local_rejects = 16_384
-dictionary_weight = 80
+runs = 1024
+max_test_rejects = 65536
+dictionary_weight = 40
 include_storage = true
 include_push_bytes = true
+max_fuzz_dictionary_addresses = 15728640
+max_fuzz_dictionary_values = 6553600
 fail_on_revert = false
 call_override = false
 
@@ -121,33 +116,19 @@ call_override = false
 dictionary_weight = 85
 include_storage = true
 include_push_bytes = true
+max_fuzz_dictionary_addresses = 15728640
+max_fuzz_dictionary_values = 6553600
 
-# I don't think fmt is ready yet, YMMV
-# [fmt]
-# line_length = 120
-# tab_width = 4
-# bracket_spacing = false
-# int_types = 'long'
-# multiline_func_header = 'attributes_first'
-# quote_style = 'double'
-# number_underscore = 'preserve'
-# single_line_statement_blocks = 'preserve'
-# variable_override_spacing = true
-# wrap_comments = false
-# ignore = []
-
-# Additional configurations
+[default.optimizer_details]
+# constantOptimizer = true
+yul = true
+# this sets the `yulDetails` of the `optimizer_details` for the `default` profile
+[default.optimizer_details.yulDetails]
+stackAllocation = false
+optimizerSteps = 'u'
 
 # [default.model_checker]
 # contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
 # engine = 'chc'
 # timeout = 10000
 # targets = [ 'assert' ]
-
-# [default.optimizer_details]
-# constantOptimizer = true
-# yul = true
-# this sets the `yulDetails` of the `optimizer_details` for the `default` profile
-# [default.optimizer_details.yulDetails]
-# stackAllocation = true
-# optimizerSteps = 'gTVnfClhnfncITgcraonvcgMtjmCumgUmdgdxVeiOlvdOvarhngxiUaxVhOdjTTDODDdUMrTthUVrrnhrjsvcjVuDmletlOThul'
