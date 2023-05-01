@@ -1,11 +1,21 @@
 {
   "name": "zen-foundry-template",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "directories": {
     "test": "test"
   },
   "scripts": {
+    "compile": "forge build",
+    "test": "forge test --fork-url $(grep ARCHIVE_NODE_URL_GOERLI_L2 .env | cut -d '=' -f2) --etherscan-api-key $(grep ETHERSCAN_API_KEY .env | cut -d '=' -f2) --gas-report -vvv",
+    "format": "forge fmt",
+    "coverage": "forge coverage --fork-url $(grep ARCHIVE_NODE_URL_GOERLI_L2 .env | cut -d '=' -f2)",
+    "coverage:generate-lcov": "forge coverage --fork-url $(grep ARCHIVE_NODE_URL_GOERLI_L2 .env | cut -d '=' -f2) --report lcov",
+    "check:upgradeability": "slither-check-upgradeability . Account --proxy-name AccountProxy",
+    "analysis:solsat": "solstat --path ./src",
+    "analysis:slither": "slither .",
+    "gas-snapshot": "forge snapshot --fork-url $(grep ARCHIVE_NODE_URL_GOERLI_L2 .env | cut -d '=' -f2)",
+    "view-storage-layout": "slither --print variable-order ."
   },
   "repository": {
     "type": "git",
