@@ -14,7 +14,7 @@ cache = true
 cache_path = "cache"
 broadcast = "broadcast"
 force = false
-evm_version = "london"
+evm_version = "shanghai"
 gas_reports = ["*"]
 gas_reports_ignore = []
 auto_detect_solc = true
@@ -129,11 +129,11 @@ include_storage = true
 # The flag indicating whether to include push bytes values
 include_push_bytes = true
 
-[default.optimizer_details]
+[profile.default.optimizer_details]
 # constantOptimizer = true
 yul = true
 # this sets the `yulDetails` of the `optimizer_details` for the `default` profile
-[default.optimizer_details.yulDetails]
+[profile.default.optimizer_details.yulDetails]
 stackAllocation = false
 optimizerSteps = 'u'
 
