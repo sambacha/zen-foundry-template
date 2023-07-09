@@ -8,12 +8,14 @@ script = "script"
 out = "out"
 libs = ["lib"]
 remappings = []
-auto_detect_remappings = true
+# @see {@link https://github.com/foundry-rs/foundry/issues/4060}
+auto_detect_remappings = false
 libraries = []
 cache = true
 cache_path = "cache"
 broadcast = "broadcast"
 force = false
+# Not all networks support PUSH0 just yet!
 evm_version = "shanghai"
 gas_reports = ["*"]
 gas_reports_ignore = []
@@ -32,14 +34,14 @@ ignored_error_codes = [
 	3716,
 ]
 deny_warnings = false
-build_info = false
+build_info = true
 ffi = false
 sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
 tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
 initial_balance = "0xffffffffffffffffffffffff"
 block_number = 1
 gas_limit = 9223372036854775807
-block_base_fee_per_gas = 0
+block_base_fee_per_gas = 7
 block_coinbase = "0x0000000000000000000000000000000000000000"
 block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
 block_timestamp = 1
