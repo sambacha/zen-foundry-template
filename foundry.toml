@@ -4,16 +4,16 @@ allow_paths = ['interfaces', 'contracts', 'src']
 include_paths = []
 src = "src"
 test = "test"
-script = "script"
-out = "out"
+script = "ops"
+out = "artifacts"
 libs = ["lib"]
 remappings = []
 # @see {@link https://github.com/foundry-rs/foundry/issues/4060}
 auto_detect_remappings = false
 libraries = []
 cache = true
-cache_path = "cache"
-broadcast = "broadcast"
+cache_path = ".foundry/cache"
+broadcast = ".foundry/broadcast"
 force = false
 # Not all networks support PUSH0 just yet!
 evm_version = "shanghai"
@@ -28,10 +28,10 @@ verbosity = 0
 # 3420 Source file does not specify required compiler version
 # 3716 Multiple SPDX license identifiers found in source file
 ignored_error_codes = [
-	1878,
-	2018,
-	3420,
-	3716,
+    1878,
+    2018,
+    3420,
+    3716,
 ]
 deny_warnings = false
 build_info = true
