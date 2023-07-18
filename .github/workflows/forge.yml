@@ -3,12 +3,16 @@ name: forge
 
 on:
   push:
-    branches:
-      - master
-    tags:
-      - 'v*.*.*'
+    paths:
+      - "**.sol"
   pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  # On-demand
+  workflow_dispatch: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
@@ -17,28 +21,50 @@ env:
   FORCE_COLOR: 2
 
 jobs:
-  tests:
+  workflow:
+    # User-definable name of this GitHub Actions job:
+    # If you are self-hosting, change the following `runs-on` value:
+    # <https://github.com/actions/runner-images/blob/releases/ubuntu22/20230710/README.md#available-images>
+    # <ubuntu-22.04:sha256:0bced47fffa3361afa981854fcabcd4577cd43cebbb808cea2b1f33a3dd7f508>
+    name: Foundry Pipeline
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
 
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-latest']
+        os: ['ubuntu-22.04']
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-
       - uses: extractions/setup-just@v1
+      
       - name: Install Foundry
-        uses: onbjerg/foundry-toolchain@v1
+        uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-      - name: Run Tests
-        id: dumpbuild
-        run: just dumpbuild
+
+      - name: Run Install
+        id: install
+        run: forge install
         
+      - name: Run Forge build
+        run: just dumpbuild
+        id: build
+
       - name: Run Tests
-        id: forge_tests
-        run: FOUNDRY_PROFILE=ci forge test
+        id: test
+        run: just test
+
+      - name: Run Slither
+        uses: crytic/slither-action@v0.3.0
+        id: slither
+        with:
+          fail-on: all
+          slither-args: --compile-force-framework foundry --exclude-dependencies --checklist
+          solc-version: "0.8.19"
