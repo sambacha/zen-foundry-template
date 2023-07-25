@@ -39,9 +39,9 @@ ffi = false
 sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
 tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
 initial_balance = "0xffffffffffffffffffffffff"
-block_number = 1
+block_number = 14047500
 gas_limit = 9223372036854775807
-block_base_fee_per_gas = 7
+block_base_fee_per_gas = 130955870352
 block_coinbase = "0x0000000000000000000000000000000000000000"
 block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
 block_timestamp = 1
@@ -137,7 +137,7 @@ yul = true
 # this sets the `yulDetails` of the `optimizer_details` for the `default` profile
 [profile.default.optimizer_details.yulDetails]
 stackAllocation = false
-optimizerSteps = 'u'
+optimizerSteps = 'u:'
 
 # [default.model_checker]
 # contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
