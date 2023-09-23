@@ -12,8 +12,6 @@ remappings = []
 auto_detect_remappings = false
 libraries = []
 cache = true
-cache_path = ".foundry/cache"
-broadcast = ".foundry/broadcast"
 force = false
 # Not all networks support PUSH0 just yet!
 evm_version = "shanghai"
@@ -28,10 +26,10 @@ verbosity = 0
 # 3420 Source file does not specify required compiler version
 # 3716 Multiple SPDX license identifiers found in source file
 ignored_error_codes = [
-    1878,
-    2018,
-    3420,
-    3716,
+	1878,
+	2018,
+	3420,
+	3716,
 ]
 deny_warnings = false
 build_info = true
@@ -57,7 +55,7 @@ names = false
 sizes = false
 optimizer = true
 optimizer_runs = 4_000
-via_ir = false
+via_ir = true
 no_storage_caching = false
 no_rpc_rate_limit = false
 bytecode_hash = "none"
@@ -99,6 +97,11 @@ title = ""
 book = "book.toml"
 ignore = []
 
+[profile.docs]
+title = 'Protocol docs'
+# root_path variable in build-docs.sh
+src = 'src'
+
 [fuzz]
 # The number of fuzz runs for fuzz tests
 runs = 10_000
@@ -114,6 +117,8 @@ dictionary_weight = 40
 include_storage = true
 # The flag indicating whether to include push bytes values
 include_push_bytes = true
+max_fuzz_dictionary_addresses = 15728640
+max_fuzz_dictionary_values = 6553600
 
 [invariant]
 # The number of runs that must execute for each invariant test group
@@ -130,14 +135,18 @@ dictionary_weight = 80
 include_storage = true
 # The flag indicating whether to include push bytes values
 include_push_bytes = true
+max_fuzz_dictionary_addresses = 15728640
+max_fuzz_dictionary_values = 6553600
 
 [profile.default.optimizer_details]
 # constantOptimizer = true
 yul = true
 # this sets the `yulDetails` of the `optimizer_details` for the `default` profile
 [profile.default.optimizer_details.yulDetails]
-stackAllocation = false
-optimizerSteps = 'u'
+stackAllocation = true
+# ACHTUNG! Setting this is extremely dangerous
+# {@see {@link https://soliditylang.org/blog/2023/07/19/full-inliner-non-expression-split-argument-evaluation-order-bug/}}
+# optimizerSteps = 'u:'
 
 # [default.model_checker]
 # contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
