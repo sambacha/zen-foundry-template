@@ -1,6 +1,7 @@
 /// SPDX-License-Identifier: MIT OR APACHE-2.0
-pragma solidity >=0.8.0;
+pragma solidity ^0.8.4;
 
+/// @title PhonyUser
 contract PhonyUser {
     function tryCall(address target, bytes memory data)
         public
