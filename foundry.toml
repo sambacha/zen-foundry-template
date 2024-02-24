@@ -5,16 +5,14 @@ include_paths = []
 src = "src"
 test = "test"
 script = "ops"
-out = "artifacts"
+out = "out"
 libs = ["lib"]
-remappings = []
-# @see {@link https://github.com/foundry-rs/foundry/issues/4060}
-auto_detect_remappings = false
+
 libraries = []
 cache = true
 force = false
-# Not all networks support PUSH0 just yet!
-evm_version = "shanghai"
+# Not all networks support PUSH0 = shanghai elif paris
+evm_version = "paris"
 gas_reports = ["*"]
 gas_reports_ignore = []
 auto_detect_solc = true
@@ -58,6 +56,12 @@ optimizer_runs = 4_000
 via_ir = true
 no_storage_caching = false
 no_rpc_rate_limit = false
+
+remappings = []
+# @see {@link https://github.com/foundry-rs/foundry/issues/4060}
+auto_detect_remappings = false
+# Whether to store the referenced sources in the metadata as literal data.
+use_literal_content = true
 bytecode_hash = "none"
 cbor_metadata = false
 sparse_mode = false
