@@ -13,6 +13,24 @@ cache = true
 force = false
 # Not all networks support PUSH0 = shanghai elif paris
 evm_version = "paris"
+# Temporary config to enable  <https://github.com/foundry-rs/foundry/issues/5782> Should be removed once EvmVersion Cancun is supported by solc
+cancun = false# -*- mode: toml; -*-
+[profile.default]
+allow_paths = ['interfaces', 'contracts', 'src']
+include_paths = []
+src = "src"
+test = "test"
+script = "ops"
+out = "out"
+libs = ["lib"]
+
+libraries = []
+cache = true
+force = false
+# Not all networks support PUSH0 = shanghai elif paris
+evm_version = "paris"
+# Temporary config to enable  <https://github.com/foundry-rs/foundry/issues/5782> Should be removed once EvmVersion Cancun is supported by solc
+cancun = false
 gas_reports = ["*"]
 gas_reports_ignore = []
 auto_detect_solc = true
@@ -32,8 +50,12 @@ ignored_error_codes = [
 deny_warnings = false
 build_info = true
 ffi = false
+
+# default is 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
 sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
-tx_origin = '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
+# alt. tx_orgin '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
+tx_origin = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
+
 initial_balance = "0xffffffffffffffffffffffff"
 block_number = 1
 gas_limit = 9223372036854775807
@@ -62,9 +84,65 @@ remappings = []
 auto_detect_remappings = false
 # Whether to store the referenced sources in the metadata as literal data.
 use_literal_content = true
+# The metadata hash is machine dependent. By default, this is set to [BytecodeHash::None] to allow for deterministic code, See: <https://docs.soliditylang.org/en/latest/metadata.html>
 bytecode_hash = "none"
 cbor_metadata = false
-sparse_mode = false
+# only the required contracts/files will be selected to be included in solc's output selection, see also
+sparse_mode = true
+
+#  EIP-170: Contract code size limit in bytes. Useful to increase this because of tests.
+# code_size_limit =
+# Use the create 2 factory in all cases including tests and non-broadcasting scripts.
+always_use_create_2_factory = false
+
+[fuzz]
+fuzz_seed = '0x3e8'
+# The number of fuzz runs for fuzz tests
+runs = 10_000
+# The maximum number of test case rejections allowed by proptest, to be
+# encountered during usage of `vm.assume` cheatcode. This will be used
+# to set the `max_global_rejects` value in proptest test runner config.
+# `max_local_rejects` option isn't exposed here since we're not using
+# `prop_filter`.
+max_test_rejects = 120000
+# The weight of the dictionary
+dictionary_weight = 40
+# The flag indicating whether to include values from storage
+include_storage = true
+# The flag indicating whether to include push bytes values
+include_push_bytes = true
+max_fuzz_dictionary_addresses = 15728640
+max_fuzz_dictionary_values = 6553600
+
+[invariant]
+# The number of runs that must execute for each invariant test group
+runs = 256
+# The number of calls executed to attempt to break invariants in one run
+depth = 33
+# Fails the invariant fuzzing if a revert occurs
+fail_on_revert = false
+# Allows overriding an unsafe external call when running invariant tests. eg. reentrancy checks
+call_override = false
+# The weight of the dictionary
+dictionary_weight = 80
+# The flag indicating whether to include values from storage
+include_storage = true
+# The flag indicating whether to include push bytes values
+include_push_bytes = true
+max_fuzz_dictionary_addresses = 15728640
+max_fuzz_dictionary_values = 6553600
+shrink_sequence = true
+shrink_run_limit = 262144
+
+[profile.default.optimizer_details]
+# constantOptimizer = true
+yul = true
+# this sets the `yulDetails` of the `optimizer_details` for the `default` profile
+[profile.default.optimizer_details.yulDetails]
+stackAllocation = true
+# ACHTUNG! Setting this is extremely dangerous
+# {@see {@link https://soliditylang.org/blog/2023/07/19/full-inliner-non-expression-split-argument-evaluation-order-bug/}}
+# optimizerSteps = 'u:'
 
 [profile.ci]
 optimizer = false
@@ -82,6 +160,7 @@ chains = "all"
 endpoints = "all"
 
 [fmt]
+sort_imports = true
 line_length = 120
 tab_width = 4
 bracket_spacing = false
@@ -106,7 +185,80 @@ title = 'Protocol docs'
 # root_path variable in build-docs.sh
 src = 'src'
 
+# [default.model_checker]
+# contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
+# engine = 'chc'
+# timeout = 10000
+# targets = [ 'assert' ]
+
+gas_reports = ["*"]
+gas_reports_ignore = []
+auto_detect_solc = true
+offline = false
+verbosity = 0
+
+    
+# Ignored Error codes
+# 2018 Function state mutability can be restricted to pure
+# 3420 Source file does not specify required compiler version
+# 3716 Multiple SPDX license identifiers found in source file
+ignored_error_codes = [
+	1878,
+	2018,
+	3420,
+	3716,
+]
+deny_warnings = false
+build_info = true
+ffi = false
+
+# default is 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+sender = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
+# alt. tx_orgin '0xAaaaAaAAaaaAAaAAaAaaaaAAAAAaAaaaAaAaaAA0'
+tx_origin = '0xafFEaFFEAFfeAfFEAffeaFfEAfFEaffeafFeAFfE'
+
+initial_balance = "0xffffffffffffffffffffffff"
+block_number = 1
+gas_limit = 9223372036854775807
+block_base_fee_per_gas = 7
+block_coinbase = "0x0000000000000000000000000000000000000000"
+block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
+block_timestamp = 1
+block_difficulty = 0
+memory_limit = 33_554_432
+
+# includes the contract's metadata in the contract's json artifact
+extra_output = ['irOptimized', 'evm.assembly']
+# emits the output selection as separate json artifact files
+extra_output_files = ['metadata']
+
+names = false
+sizes = false
+optimizer = true
+optimizer_runs = 4_000
+via_ir = true
+no_storage_caching = false
+no_rpc_rate_limit = false
+
+remappings = []
+# @see {@link https://github.com/foundry-rs/foundry/issues/4060}
+auto_detect_remappings = false
+# Whether to store the referenced sources in the metadata as literal data. Helps with Verification
+use_literal_content = true
+# The metadata hash is machine dependent. By default, this is set to none to allow for deterministic code, See: <https://docs.soliditylang.org/en/latest/metadata.html>
+bytecode_hash = "none"
+cbor_metadata = false
+# Only the required contracts/files will be selected to be included in solc's output selection, see also
+sparse_mode = true
+
+
+# EIP-170: Contract code size limit in bytes. Useful to increase this because of tests.
+# code_size_limit = 
+# Use the create 2 factory in all cases including tests and non-broadcasting scripts.
+always_use_create_2_factory = false
+
 [fuzz]
+fuzz_seed = '0x3e8'
 # The number of fuzz runs for fuzz tests
 runs = 10_000
 # The maximum number of test case rejections allowed by proptest, to be
@@ -128,7 +280,7 @@ max_fuzz_dictionary_values = 6553600
 # The number of runs that must execute for each invariant test group
 runs = 256
 # The number of calls executed to attempt to break invariants in one run
-depth = 100
+depth = 33
 # Fails the invariant fuzzing if a revert occurs
 fail_on_revert = false
 # Allows overriding an unsafe external call when running invariant tests. eg. reentrancy checks
@@ -141,6 +293,8 @@ include_storage = true
 include_push_bytes = true
 max_fuzz_dictionary_addresses = 15728640
 max_fuzz_dictionary_values = 6553600
+shrink_sequence = true
+shrink_run_limit = 262144
 
 [profile.default.optimizer_details]
 # constantOptimizer = true
@@ -151,6 +305,47 @@ stackAllocation = true
 # ACHTUNG! Setting this is extremely dangerous
 # {@see {@link https://soliditylang.org/blog/2023/07/19/full-inliner-non-expression-split-argument-evaluation-order-bug/}}
 # optimizerSteps = 'u:'
+
+[profile.ci]
+optimizer = false
+fuzz_runs = 4_069
+force = true
+verbosity = 4
+gas_reports = ["*"]
+
+[[profile.default.fs_permissions]]
+access = "read"
+path = "out"
+
+[profile.default.rpc_storage_caching]
+chains = "all"
+endpoints = "all"
+
+[fmt]
+sort_imports = true
+line_length = 120
+tab_width = 4
+bracket_spacing = false
+int_types = "long"
+multiline_func_header = "attributes_first"
+quote_style = "double"
+number_underscore = "preserve"
+single_line_statement_blocks = "preserve"
+override_spacing = false
+wrap_comments = false
+ignore = []
+contract_new_lines = false
+
+[doc]
+out = "docs"
+title = ""
+book = "book.toml"
+ignore = []
+
+[profile.docs]
+title = 'Protocol docs'
+# root_path variable in build-docs.sh
+src = 'src'
 
 # [default.model_checker]
 # contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
