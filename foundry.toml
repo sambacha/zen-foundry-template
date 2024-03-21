@@ -17,9 +17,7 @@ remappings = [
 libraries = []
 cache = true
 force = false
-# Not all networks support PUSH0 = shanghai elif paris
-# This is default as of solidity 0.8.20
-evm_version = "shanghai"
+
 gas_reports = ["*"]
 gas_reports_ignore = []
 auto_detect_solc = true
@@ -44,37 +42,48 @@ sender = "0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38"
 tx_origin = "0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38"
 initial_balance = "0xffffffffffffffffffffffff"
 block_number = 1
-gas_limit = 9223372036854775807
 block_base_fee_per_gas = 7
 block_coinbase = "0x0000000000000000000000000000000000000000"
 block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
 block_timestamp = 1
 block_difficulty = 0
-memory_limit = 134_217_728
+# @NOTE vm.pauseGasMetering 
+# {@see {@link https://github.com/foundry-rs/foundry/issues/3971} }
+# default: 134_217_728
+memory_limit = 11_149_934_592
+# default: 9_223_372_036_854_775_807
+gas_limit = 18_446_744_073_709_551_615
 
+# Solidity Compiler Settings
+# Not all networks support PUSH0 = shanghai elif paris
+# This is default as of solidity 0.8.20
+evm_version = "cancun"
 # includes the contract's metadata in the contract's json artifact
 extra_output = ['irOptimized', 'evm.assembly']
 # emits the output selection as separate json artifact files
 extra_output_files = ['metadata']
-
 names = false
 sizes = false
 optimizer = true
-optimizer_runs = 4_000
+optimizer_runs = 1_000
 via_ir = true
-no_storage_caching = false
-no_rpc_rate_limit = false
-# @see {@link https://github.com/foundry-rs/foundry/issues/4060}
+# {@see {@link https://github.com/foundry-rs/foundry/issues/4060} }
 auto_detect_remappings = false
-# Whether to store the referenced sources in the metadata as literal data. Helps with Verification
+# Whether to store the referenced sources in the metadata as literal data. Helps with verification
 use_literal_content = true
-# The metadata hash is machine dependent. By default, this is set to none to allow for deterministic code, See: <https://docs.soliditylang.org/en/latest/metadata.html>
+# The metadata hash is machine dependent. By default, this is set to none to allow for deterministic code.
+# {@see {@link https://docs.soliditylang.org/en/latest/metadata.html} }
 bytecode_hash = "none"
 cbor_metadata = false
-# Only the required contracts/files will be selected to be included in solc's output selection, see also
+# Only the required contracts/files will be selected to be included in solc's output selection.
 sparse_mode = true
 ast = false
 isolate = false
+
+# RPC Cache Settings
+no_storage_caching = false
+no_rpc_rate_limit = false
+
 
 
 [profile.ci]
@@ -138,8 +147,6 @@ max_fuzz_dictionary_addresses = 15728640
 max_fuzz_dictionary_values = 6553600
 max_calldata_fuzz_dictionary_addresses = 0
 
-
-
 [invariant]
 # The number of runs that must execute for each invariant test group
 runs = 420
@@ -162,7 +169,6 @@ shrink_sequence = true
 shrink_run_limit = 262144
 preserve_state = false
 
-
 [profile.default.optimizer_details]
 # constantOptimizer = true
 yul = true
@@ -170,7 +176,7 @@ yul = true
 [profile.default.optimizer_details.yulDetails]
 stackAllocation = true
 # ACHTUNG! Setting this is extremely dangerous
-# {@see {@link https://soliditylang.org/blog/2023/07/19/full-inliner-non-expression-split-argument-evaluation-order-bug/}}
+# {@see {@link https://soliditylang.org/blog/2023/07/19/full-inliner-non-expression-split-argument-evaluation-order-bug/} }
 # optimizerSteps = 'u:'
 
 # [default.model_checker]
