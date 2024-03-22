@@ -23,6 +23,11 @@ coverage/
 /dist
 /build
 
+## Nix/Direnv ##
+.env
+.envrc
+.direnv
+
 ## Binary ##
 *.zip
 *.tar
