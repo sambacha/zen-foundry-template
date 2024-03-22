@@ -51,8 +51,8 @@ block_difficulty = 0
 # {@see {@link https://github.com/foundry-rs/foundry/issues/3971} }
 # default: 134_217_728
 memory_limit = 11_149_934_592
-# default: 9_223_372_036_854_775_807
-gas_limit = 18_446_744_073_709_551_615
+# max value for gas_limit is 9_223_372_036_854_775_807
+gas_limit = 9_223_372_036_854_775_807
 
 # Solidity Compiler Settings
 # Not all networks support PUSH0 = shanghai elif paris
