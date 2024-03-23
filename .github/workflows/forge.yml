@@ -49,6 +49,10 @@ jobs:
         with:
           version: nightly
 
+      - name: Config Check
+        run: forge config --fix
+        id: check_config
+        
       - name: Run Install
         id: install
         run: forge install
