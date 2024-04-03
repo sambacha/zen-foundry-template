@@ -16,6 +16,7 @@ wget https://raw.githubusercontent.com/sambacha/zen-foundry-template/master/.git
 wget https://raw.githubusercontent.com/sambacha/zen-foundry-template/master/.gitattributes
 wget https://raw.githubusercontent.com/sambacha/zen-foundry-template/master/.editorconfig
 wget https://raw.githubusercontent.com/sambacha/zen-foundry-template/master/justfile
+wget https://raw.githubusercontent.com/sambacha/zen-foundry-template/master/foundry.toml 
 mkdir -p src
 mkdir -p test
 mkdir -p .github/workflows
