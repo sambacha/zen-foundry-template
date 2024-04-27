@@ -16,7 +16,6 @@ remappings = [
 ]
 libraries = []
 cache = true
-cache_path = '.cache'
 force = false
 
 gas_reports = ["*"]
@@ -85,27 +84,27 @@ isolate = false
 no_storage_caching = false
 no_rpc_rate_limit = false
 
-
-
 [profile.ci]
-optimizer = false
+optimizer = true
+via_ir = false
 fuzz_runs = 4_069
 force = true
 verbosity = 4
 gas_reports = ["*"]
-revert_strings = debug
+revert_strings = 'debug'
 extra_output = [
   "abi",
   "evm.bytecode",
   "evm.deployedBytecode",
   "evm.methodIdentifiers",
 ]
-
 # Environment: FOUNDRY_PROMPT_TIMEOUT
 # The number of seconds to wait before vm.prompt reverts with a timeout.
 # default = 120
 prompt_timeout = 30
 seed = '0x6900000000000000000000000000000000000000000000000000000000000000'
+cache = true
+cache_path = '.cache'
 
 [[profile.default.fs_permissions]]
 access = "read"
