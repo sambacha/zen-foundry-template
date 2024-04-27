@@ -8,11 +8,11 @@ script = "ops"
 out = "out"
 libs = ["lib"]
 remappings = [
-    "ds-test/=lib/forge-std/lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/",
-    "libsol/=lib/libsol/src/",
-    "solady/=lib/solady/",
-    "solmate/=lib/solmate/src/",
+  "ds-test/=lib/forge-std/lib/ds-test/src/",
+  "forge-std/=lib/forge-std/src/",
+  "libsol/=lib/libsol/src/",
+  "solady/=lib/solady/",
+  "solmate/=lib/solmate/src/",
 ]
 libraries = []
 cache = true
@@ -29,10 +29,10 @@ verbosity = 0
 # 3420 Source file does not specify required compiler version
 # 3716 Multiple SPDX license identifiers found in source file
 ignored_error_codes = [
-	1878,
-	2018,
-	3420,
-	3716,
+  1878,
+  2018,
+  3420,
+  3716,
 ]
 deny_warnings = false
 build_info = true
@@ -47,7 +47,7 @@ block_coinbase = "0x0000000000000000000000000000000000000000"
 block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
 block_timestamp = 1
 block_difficulty = 0
-# @NOTE vm.pauseGasMetering 
+# @NOTE vm.pauseGasMetering
 # {@see {@link https://github.com/foundry-rs/foundry/issues/3971} }
 # default: 134_217_728
 memory_limit = 11_149_934_592
@@ -127,7 +127,7 @@ number_underscore = "thousands"
 single_line_statement_blocks = "preserve"
 override_spacing = false
 wrap_comments = true
-ignore = ['*.mutant.sol','*.vendor.sol']
+ignore = ['*.mutant.sol', '*.vendor.sol']
 contract_new_lines = false
 # import statements are sorted alphabetically within their import groups.
 #  while preserving the relative ordering of the groups.
