@@ -16,6 +16,7 @@ remappings = [
 ]
 libraries = []
 cache = true
+cache_path = '.cache'
 force = false
 
 gas_reports = ["*"]
@@ -92,6 +93,19 @@ fuzz_runs = 4_069
 force = true
 verbosity = 4
 gas_reports = ["*"]
+revert_strings = debug
+extra_output = [
+  "abi",
+  "evm.bytecode",
+  "evm.deployedBytecode",
+  "evm.methodIdentifiers",
+]
+
+# Environment: FOUNDRY_PROMPT_TIMEOUT
+# The number of seconds to wait before vm.prompt reverts with a timeout.
+# default = 120
+prompt_timeout = 30
+seed = '0x6900000000000000000000000000000000000000000000000000000000000000'
 
 [[profile.default.fs_permissions]]
 access = "read"
@@ -102,19 +116,23 @@ chains = "all"
 endpoints = "all"
 
 [fmt]
-line_length = 120
-tab_width = 4
+# default 120
+line_length = 100
+# default 4
+tab_width = 2
 bracket_spacing = false
 int_types = "long"
 multiline_func_header = "attributes_first"
 quote_style = "double"
-number_underscore = "preserve"
+number_underscore = "thousands"
 single_line_statement_blocks = "preserve"
 override_spacing = false
-wrap_comments = false
-ignore = []
+wrap_comments = true
+ignore = ['*.mutant.sol','*.vendor.sol']
 contract_new_lines = false
-sort_imports = true
+# import statements are sorted alphabetically within their import groups.
+#  while preserving the relative ordering of the groups.
+sort_imports = false
 
 [doc]
 out = "docs"
@@ -146,6 +164,9 @@ include_push_bytes = true
 max_fuzz_dictionary_addresses = 15728640
 max_fuzz_dictionary_values = 6553600
 max_calldata_fuzz_dictionary_addresses = 0
+gas_report_samples = 256
+failure_persist_dir = "cache/fuzz"
+failure_persist_file = "failures"
 
 [invariant]
 # The number of runs that must execute for each invariant test group
@@ -168,6 +189,8 @@ max_calldata_fuzz_dictionary_addresses = 0
 shrink_sequence = true
 shrink_run_limit = 262144
 preserve_state = false
+max_assume_rejects = 65536
+gas_report_samples = 256
 
 [profile.default.optimizer_details]
 # constantOptimizer = true
