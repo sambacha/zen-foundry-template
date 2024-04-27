@@ -8,11 +8,11 @@ script = "ops"
 out = "out"
 libs = ["lib"]
 remappings = [
-    "ds-test/=lib/forge-std/lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/",
-    "libsol/=lib/libsol/src/",
-    "solady/=lib/solady/",
-    "solmate/=lib/solmate/src/",
+  "ds-test/=lib/forge-std/lib/ds-test/src/",
+  "forge-std/=lib/forge-std/src/",
+  "libsol/=lib/libsol/src/",
+  "solady/=lib/solady/",
+  "solmate/=lib/solmate/src/",
 ]
 libraries = []
 cache = true
@@ -29,10 +29,10 @@ verbosity = 0
 # 3420 Source file does not specify required compiler version
 # 3716 Multiple SPDX license identifiers found in source file
 ignored_error_codes = [
-	1878,
-	2018,
-	3420,
-	3716,
+  1878,
+  2018,
+  3420,
+  3716,
 ]
 deny_warnings = false
 build_info = true
@@ -47,7 +47,7 @@ block_coinbase = "0x0000000000000000000000000000000000000000"
 block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
 block_timestamp = 1
 block_difficulty = 0
-# @NOTE vm.pauseGasMetering 
+# @NOTE vm.pauseGasMetering
 # {@see {@link https://github.com/foundry-rs/foundry/issues/3971} }
 # default: 134_217_728
 memory_limit = 11_149_934_592
@@ -84,14 +84,27 @@ isolate = false
 no_storage_caching = false
 no_rpc_rate_limit = false
 
-
-
 [profile.ci]
-optimizer = false
+optimizer = true
+via_ir = false
 fuzz_runs = 4_069
 force = true
 verbosity = 4
 gas_reports = ["*"]
+revert_strings = 'debug'
+extra_output = [
+  "abi",
+  "evm.bytecode",
+  "evm.deployedBytecode",
+  "evm.methodIdentifiers",
+]
+# Environment: FOUNDRY_PROMPT_TIMEOUT
+# The number of seconds to wait before vm.prompt reverts with a timeout.
+# default = 120
+prompt_timeout = 30
+seed = '0x6900000000000000000000000000000000000000000000000000000000000000'
+cache = true
+cache_path = '.cache'
 
 [[profile.default.fs_permissions]]
 access = "read"
@@ -102,19 +115,23 @@ chains = "all"
 endpoints = "all"
 
 [fmt]
-line_length = 120
-tab_width = 4
+# default 120
+line_length = 100
+# default 4
+tab_width = 2
 bracket_spacing = false
 int_types = "long"
 multiline_func_header = "attributes_first"
 quote_style = "double"
-number_underscore = "preserve"
+number_underscore = "thousands"
 single_line_statement_blocks = "preserve"
 override_spacing = false
-wrap_comments = false
-ignore = []
+wrap_comments = true
+ignore = ['*.mutant.sol', '*.vendor.sol']
 contract_new_lines = false
-sort_imports = true
+# import statements are sorted alphabetically within their import groups.
+#  while preserving the relative ordering of the groups.
+sort_imports = false
 
 [doc]
 out = "docs"
@@ -146,6 +163,9 @@ include_push_bytes = true
 max_fuzz_dictionary_addresses = 15728640
 max_fuzz_dictionary_values = 6553600
 max_calldata_fuzz_dictionary_addresses = 0
+gas_report_samples = 256
+failure_persist_dir = "cache/fuzz"
+failure_persist_file = "failures"
 
 [invariant]
 # The number of runs that must execute for each invariant test group
@@ -168,6 +188,8 @@ max_calldata_fuzz_dictionary_addresses = 0
 shrink_sequence = true
 shrink_run_limit = 262144
 preserve_state = false
+max_assume_rejects = 65536
+gas_report_samples = 256
 
 [profile.default.optimizer_details]
 # constantOptimizer = true
