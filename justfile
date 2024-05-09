@@ -6,7 +6,7 @@
 
 bt := '0'
 export RUST_BACKTRACE := bt
-et := 'ethers=trace'
+et := 'forge=trace'
 export RUST_LOG := et
 log := "warn"
 export JUST_LOG := log
@@ -21,8 +21,8 @@ tl:
 sl:
     forge snapshot --list
 
-dumpbuild:
-    ETHERS_SOLC_LOG=in=in.json,out=out.json;  forge build --force
+build-debug:
+    RUST_LOG=trace forge build --force
 
 dumplists:
     FORGE_GAS_REPORT=''; forge test -l -j > test-list.json
