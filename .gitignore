@@ -2,11 +2,15 @@
 /out
 cache/
 artifacts/
+tmp/
+
 logs
 *.log
 !/broadcast
 /broadcast/*.json
 /broadcast/*/31337/
+lcov.info
+coverage/
 
 ## CVE-2021-21300 style exploits
 .\#*
