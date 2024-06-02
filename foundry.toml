@@ -61,7 +61,8 @@ evm_version = "cancun"
 cancun = true
 
 # includes the contract's metadata in the contract's json artifact
-extra_output = ['irOptimized', 'evm.assembly']
+# includes the source mappings for compiled bytecode artifact
+extra_output = ['irOptimized', 'evm.assembly', 'evm.bytecode', 'evm.generatedSources']
 # emits the output selection as separate json artifact files
 extra_output_files = ['metadata']
 names = false
