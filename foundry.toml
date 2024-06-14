@@ -58,7 +58,6 @@ gas_limit = 9_223_372_036_854_775_807
 # Not all networks support PUSH0 = shanghai elif paris
 # This is default as of solidity 0.8.20
 evm_version = "cancun"
-cancun = true
 
 # includes the contract's metadata in the contract's json artifact
 extra_output = ['irOptimized', 'evm.assembly']
