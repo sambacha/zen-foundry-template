@@ -11,7 +11,7 @@ remappings = [
   "ds-test/=lib/forge-std/lib/ds-test/src/",
   "forge-std/=lib/forge-std/src/",
   "libsol/=lib/libsol/src/",
-  "solady/=lib/solady/src/",
+  "solady/=lib/solady/",
   "solmate/=lib/solmate/src/",
 ]
 libraries = []
