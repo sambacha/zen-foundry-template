@@ -59,8 +59,10 @@ gas_limit = 9_223_372_036_854_775_807
 # This is default as of solidity 0.8.20
 evm_version = "cancun"
 
+# {@see {@link https://solidity-fr.readthedocs.io/fr/latest/using-the-compiler.html#input-description}
 # includes the contract's metadata in the contract's json artifact
-extra_output = ['irOptimized', 'evm.assembly']
+# includes the source mappings for compiled bytecode artifact
+extra_output = ['irOptimized', 'evm.assembly', 'evm.bytecode', 'evm.bytecode.generatedSources']
 # emits the output selection as separate json artifact files
 extra_output_files = ['metadata']
 names = false
@@ -80,6 +82,8 @@ cbor_metadata = false
 sparse_mode = true
 ast = false
 isolate = false
+create2_library_salt = "0x0000000000000000000000000000000000000000000000000000000000000000"
+prague = false
 
 # RPC Cache Settings
 no_storage_caching = false
@@ -172,7 +176,7 @@ failure_persist_file = "failures"
 # The number of runs that must execute for each invariant test group
 runs = 420
 # The number of calls executed to attempt to break invariants in one run
-depth = 25
+depth = 500
 # Fails the invariant fuzzing if a revert occurs
 fail_on_revert = false
 # Allows overriding an unsafe external call when running invariant tests. eg. reentrancy checks
