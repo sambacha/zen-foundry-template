@@ -38,6 +38,9 @@ deny_warnings = false
 build_info = true
 ffi = false
 always_use_create_2_factory = false
+# Cheatcode Handler Address
+# This is the same address as the one used in DappTools's HEVM.
+# 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
 sender = "0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38"
 tx_origin = "0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38"
 initial_balance = "0xffffffffffffffffffffffff"
