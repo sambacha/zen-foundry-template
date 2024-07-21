@@ -49,14 +49,38 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-
-      - name: Config Check
-        run: forge config --fix
-        id: check_config
         
       - name: Run Install
         id: install
         run: forge install
+
+      - name: Run forge config --fix
+        run: forge config --fix foundry.toml
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --exit-code foundry.toml || echo "changes" > changes_detected
+
+      - name: Fail if changes detected
+        if: steps.check_changes.outputs.changes_detected == 'changes'
+        run: |
+          echo "Changes detected in foundry.toml"
+          exit 1
+
+      - name: Comment on PR with changes
+        if: steps.check_changes.outputs.changes_detected == 'changes'
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Changes detected in `foundry.toml`
+            ```diff
+            $(git diff foundry.toml)
+            ```
+      - name: Install diffutils
+        run: sudo apt-get install diffutils
         
       - name: Run Forge build
         run: just build
