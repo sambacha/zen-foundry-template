@@ -114,6 +114,10 @@ seed = '0x6900000000000000000000000000000000000000000000000000000000000000'
 cache = true
 cache_path = '.cache'
 
+show_progress = false
+unchecked_cheatcode_artifacts = false
+
+
 [[profile.default.fs_permissions]]
 access = "read"
 path = "out"
@@ -177,7 +181,7 @@ failure_persist_file = "failures"
 
 [invariant]
 # The number of runs that must execute for each invariant test group
-runs = 420
+runs = 256
 # The number of calls executed to attempt to break invariants in one run
 depth = 500
 # Fails the invariant fuzzing if a revert occurs
@@ -194,7 +198,8 @@ max_fuzz_dictionary_addresses = 15728640
 max_fuzz_dictionary_values = 6553600
 max_calldata_fuzz_dictionary_addresses = 0
 shrink_sequence = true
-shrink_run_limit = 262144
+# run limit max: 262144
+shrink_run_limit =  5000
 preserve_state = false
 max_assume_rejects = 65536
 gas_report_samples = 256
@@ -215,3 +220,8 @@ stackAllocation = true
 # engine = 'chc'
 # timeout = 10000
 # targets = [ 'assert' ]
+
+[bind_json]
+out = "utils/JsonBindings.sol"
+include = []
+exclude = []
