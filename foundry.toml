@@ -29,10 +29,10 @@ verbosity = 0
 # 3420 Source file does not specify required compiler version
 # 3716 Multiple SPDX license identifiers found in source file
 ignored_error_codes = [
-  1878,
-  2018,
-  3420,
-  3716,
+  "license",
+  "code-size",
+  "init-code-size",
+  "transient-storage",
 ]
 deny_warnings = false
 build_info = true
@@ -87,6 +87,7 @@ ast = false
 isolate = false
 create2_library_salt = "0x0000000000000000000000000000000000000000000000000000000000000000"
 prague = false
+unchecked_cheatcode_artifacts = false
 
 # RPC Cache Settings
 no_storage_caching = false
