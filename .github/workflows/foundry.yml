@@ -51,7 +51,7 @@ jobs:
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
-          version: latest
+          version: nightly
       
       - name: Install lcov
         run: sudo apt-get update && sudo apt-get install -y lcov
