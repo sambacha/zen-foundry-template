@@ -7,6 +7,21 @@
 forge init --template https://github.com/sambacha/zen-foundry-template
 ```
 
+## Features
+
+### Justfile
+
+The included *`justfile`* provides various recipes for building, testing, deploying, and managing the gas usage of the project.
+
+Using *`justfile`* Groups and Recipes:
+  
+ - `build`: Recipes for building the project, including a basic build and a debug build.
+ - `test`: Recipes for running tests, including local tests, mainnet tests, and debug tests.
+ - `deploy`: Recipes for deploying and verifying contracts.
+ - `gas`: Recipes for generating gas snapshots and gas coverage reports.
+ - `anvil`: Recipes for starting an Anvil local Ethereum node, either with or without a mainnet fork.
+
+
 <h3> template.script </h3>
 
 ```shell
