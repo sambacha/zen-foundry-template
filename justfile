@@ -1,82 +1,73 @@
 #!/usr/bin/env just --justfile
 # @title Foundry Justfile
-# @version: 0.4.4
+# @version: 0.5.0
 # @license UPL-1.0
-# @see {@link https://github.com/sambacha/foundry-scripts}
 
+# @note These are disabled because of Justfile's Groups syntax
+# @see {@link https://just.systems/man/en/groups.html}
+# shellcheck disable=SC1073
+# shellcheck disable=SC1035
+# shellcheck disable=SC1036
+# shellcheck disable=SC1072
+
+# @title Foundry Justfile
+# @version: 0.5,9
+# @license UPL-1.0
+
+# Load settings first
+set dotenv-load := true
+set positional-arguments := true
+set export := true
+
+# Environment variables
 bt := '0'
 export RUST_BACKTRACE := bt
-et := 'forge=trace'
-export RUST_LOG := et
+et := 'forge=trace' 
+export RUST_LOG := et 
 log := "warn"
 export JUST_LOG := log
 
-# RUST_LOG=node,backend,api,rpc=warn anvil
-_default:
-    just --list
-
-tl:
-    forge test --list
-
-sl:
-    forge snapshot --list
-
-build-debug:
-    RUST_LOG=trace forge build --force
-
-dumplists:
-    FORGE_GAS_REPORT=''; forge test -l -j > test-list.json
-
-# load .env file
-
-set dotenv-load := true
-
-# pass justfile recipe args as positional arguments to commands
-
-set positional-arguments := true
-
-# 1e18 decimals
-
+### Constants ###
 HEX_18 := "0x0000000000000000000000000000000000000000000000000000000000000012"
 HEX_12 := "0x000000000000000000000000000000000000000000000000000000000000000c"
 HEX_8 := "0x0000000000000000000000000000000000000000000000000000000000000008"
 HEX_6 := "0x0000000000000000000000000000000000000000000000000000000000000006"
 
-# set mock target to 18 decimals by default
 
-FORGE_MOCK_TARGET_DECIMALS := env_var_or_default("FORGE_MOCK_TARGET_DECIMALS", HEX_18)
-FORGE_MOCK_UNDERLYING_DECIMALS := env_var_or_default("FORGE_MOCK_UNDERLYING_DECIMALS", HEX_18)
+[group('private')]
+_default:
+    just --list
 
-# Alchemy API Key is public
-# Mnemonic is hardhat's default
+# BUILD recipes
+[group('build')]
+build: && _timer
+    cd {{ invocation_directory() }}; forge build --sizes --names --force
 
-ALCHEMY_KEY := env_var_or_default("ALCHEMY_KEY", "vI8OBZj4Wue9yNPSDVa7Klqt-UeRywrx")
-MAINNET_RPC := "https://eth-mainnet.alchemyapi.io/v2/" + ALCHEMY_KEY
-MNEMONIC := env_var_or_default("MNEMONIC", "test test test test test test test test test test test junk")
+build-debug:
+    RUST_LOG=trace forge build --force
 
-# export just vars as env vars
+# TEST recipes
+[group('test')]
+test: test-local
 
-set export := true
+test-local *commands="": && _timer
+    cd {{ invocation_directory() }}; forge test --match-path "*.t.sol" {{ commands }}
 
-# Contract Size
-size:
-    forge build --sizes --force
+test-mainnet *commands="": && _timer
+    cd {{ invocation_directory() }}; forge test --rpc-url {{ MAINNET_RPC }} --match-path "*.t.sol" {{ commands }}
 
-# [DEPLOY]: Env Config
+test-debug *commands="": && _timer
+    cd {{ invocation_directory() }}; forge test --rpc-url {{ MAINNET_RPC }} --match-path "*.t.sol" {{ commands }}
 
-DEPLOYED_ADDRESS := ''
-CONTRACT_NAME := ''
-ETHERSCAN_API_KEY := ''
-
-# [DEPLOY]: Deploy contract
+# DEPLOY recipes
+[group('deploy')]
 deploy-contract:
     forge create $(contract) \
     --constructor-args $(constructorArgs) \
     --rpc-url $(url) \
     --private-key $(privateKey)
 
-# [DEPLOY]: Verify contract
-verify-contract:
+verify-contract: _validate_env && deploy-contract
     forge verify-contract \
     --chain-id $(chainId) \
     --constructor-args `cast abi-encode "$(constructorSig)" $(constructorArgs)` \
@@ -86,36 +77,10 @@ verify-contract:
     {{ CONTRACT_NAME }} \
     {{ ETHERSCAN_API_KEY }}
 
-# [BUILD]: Timer
-build: && _timer
-    cd {{ invocation_directory() }}; forge build --sizes --names --force
-
-# [TEST] mainnet test
-build-mainnet: && _timer
-    cd {{ invocation_directory() }}; forge test --match-path "*.t.sol" --fork-url {{ MAINNET_RPC }}
-
-# [TEST] default test scripts
-test: test-local
-
-# [TEST] run local forge test using --match-path <PATTERN>
-test-local *commands="": && _timer
-    cd {{ invocation_directory() }}; forge test --match-path "*.t.sol" {{ commands }}
-
-# [TEST] run mainnet fork forge tests (all files with the extension .t.sol)
-test-mainnet *commands="": && _timer
-    cd {{ invocation_directory() }}; forge test --rpc-url {{ MAINNET_RPC }} --match-path "*.t.sol" {{ commands }}
-
-# [TEST] run mainnet fork forge debug tests (all files with the extension .t.sol)
-test-debug *commands="": && _timer
-    cd {{ invocation_directory() }}; forge test --rpc-url {{ MAINNET_RPC }} --match-path "*.t.sol" {{ commands }}
-
-gas-cov:
-    forge test --gas-report
-
-# [GAS] default gas snapshot script
+# GAS recipes
+[group('gas')]
 gas-snapshot: gas-snapshot-local
 
-# [GAS] get gas snapshot from local tests and save it to file
 gas-snapshot-local:
     cd {{ invocation_directory() }}; \
     just test-local | grep 'gas:' | cut -d " " -f 2-4 | sort > \
@@ -123,26 +88,31 @@ gas-snapshot-local:
         cat {{ invocation_directory() }}/package.json | jq .name | tr -d '"' | cut -d"/" -f2- \
     )
 
-# [GAS] get gas snapshot timer
-forge-gas-snapshot: && _timer
-    @cd {{ invocation_directory() }}; forge snapshot --no-match-path ".*.*"
+gas-cov:
+    forge test --gas-report
 
-forge-gas-snapshot-diff: && _timer
-    @cd {{ invocation_directory() }}; forge snapshot --no-match-path ".*.*" --diff
+# ANVIL recipes
+[anvil]
+anvil:
+    anvil
 
-# Solidity test ffi callback to get Target decimals for the base Mock Target token
-_forge_mock_target_decimals:
-    @printf {{ FORGE_MOCK_TARGET_DECIMALS }}
+anvil-fork:
+    anvil --fork-url {{ MAINNET_RPC }}
 
-_forge_mock_underlying_decimals:
-    @printf {{ FORGE_MOCK_UNDERLYING_DECIMALS }}
+anvil-fork-block:
+    anvil --fork-url {{ MAINNET_RPC }} --fork-block-number $(block)
 
-# [UTILS] utility functions
-
-start_time := `date +%s`
-
+# UTILITY recipes
+[private]
 _timer:
     @echo "[TASK]: Executed in $(($(date +%s) - {{ start_time }})) seconds"
+
+[private]
+_validate_env:
+    #!/usr/bin/env bash
+    if [ -z "$ETHERSCAN_API_KEY" ]; then
+        echo "Error: ETHERSCAN_API_KEY not set" && exit 1
+    fi
 
 # mode: makefile
 # End:
