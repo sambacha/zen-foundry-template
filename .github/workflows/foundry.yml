@@ -1,0 +1,208 @@
+name: Foundry Check Suite
+
+on:
+  push:
+    paths: ['**.sol', '**.toml']
+    branches: [main, develop]
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+env:
+  FORCE_COLOR: 2
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  # Initial check creation job
+  create-check-suite:
+    runs-on: ubuntu-latest
+    outputs:
+      check_suite_id: ${{ steps.create_suite.outputs.check_suite_id }}
+    steps:
+      - id: create_suite
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const suite = await github.rest.checks.createSuite({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head_sha: context.sha
+            });
+            return suite.data.id;
+
+  matrix-test:
+    needs: create-check-suite
+    name: Foundry ${{ matrix.foundry-version }} / Solc ${{ matrix.solc-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - foundry-version: 'nightly'
+            solc-version: '0.8.19'
+            check-name: 'Foundry Nightly - Solc 0.8.19'
+          - foundry-version: 'nightly'
+            solc-version: '0.8.20'
+            check-name: 'Foundry Nightly - Solc 0.8.20'
+          - foundry-version: '0.8.19'
+            solc-version: '0.8.19'
+            check-name: 'Foundry Stable - Solc 0.8.19'
+            primary: true
+          - foundry-version: '0.8.19'
+            solc-version: '0.8.20'
+            check-name: 'Foundry Stable - Solc 0.8.20'
+    
+    steps:
+      # Create check run for this matrix combination
+      - name: Create Check Run
+        id: create_check
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const check = await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: '${{ matrix.check-name }}',
+              head_sha: context.sha,
+              status: 'in_progress',
+              output: {
+                title: 'Test Run Started',
+                summary: 'Running Foundry tests...',
+                text: 'Initializing test environment'
+              }
+            });
+            console.log(`Created check run ID: ${check.data.id}`);
+            return check.data.id;
+      
+      - uses: actions/checkout@v4
+      
+      - name: Update Check - Setup
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: '${{ steps.create_check.outputs.result }}',
+              status: 'in_progress',
+              output: {
+                title: 'Setting up environment',
+                summary: 'Installing dependencies and configuring environment',
+                text: 'Installing Foundry and dependencies...'
+              }
+            });
+      
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: ${{ matrix.foundry-version }}
+      
+      - name: Configure Solc
+        run: forge config solc ${{ matrix.solc-version }}
+      
+      - name: Install Dependencies
+        run: forge install
+      
+      - name: Update Check - Building
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: '${{ steps.create_check.outputs.result }}',
+              status: 'in_progress',
+              output: {
+                title: 'Building Contracts',
+                summary: 'Compiling smart contracts...',
+                text: 'Running forge build...'
+              }
+            });
+      
+      - name: Build
+        id: build
+        run: |
+          forge build --sizes > build_output.txt
+          echo "build_output<<EOF" >> $GITHUB_OUTPUT
+          cat build_output.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Update Check - Testing
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: '${{ steps.create_check.outputs.result }}',
+              status: 'in_progress',
+              output: {
+                title: 'Running Tests',
+                summary: 'Executing test suite...',
+                text: 'Running forge test...'
+              }
+            });
+      
+      - name: Test
+        id: test
+        run: |
+          forge test -vv > test_output.txt
+          echo "test_output<<EOF" >> $GITHUB_OUTPUT
+          cat test_output.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Update Check - Complete
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const buildSuccess = '${{ steps.build.outcome }}' === 'success';
+            const testSuccess = '${{ steps.test.outcome }}' === 'success';
+            const success = buildSuccess && testSuccess;
+            
+            const buildOutput = `${{ steps.build.outputs.build_output }}`;
+            const testOutput = `${{ steps.test.outputs.test_output }}`;
+            
+            await github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: '${{ steps.create_check.outputs.result }}',
+              status: 'completed',
+              conclusion: success ? 'success' : 'failure',
+              output: {
+                title: success ? 'All Tests Passed' : 'Tests Failed',
+                summary: `Build: ${buildSuccess ? '✅' : '❌'}\nTests: ${testSuccess ? '✅' : '❌'}`,
+                text: '```\n' + 
+                      'Build Output:\n' + 
+                      buildOutput + 
+                      '\n\nTest Output:\n' + 
+                      testOutput +
+                      '\n```'
+              }
+            });
+
+  # Final status update
+  update-check-suite:
+    needs: [create-check-suite, matrix-test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Check Suite Status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const success = '${{ needs.matrix-test.result }}' === 'success';
+            await github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_suite_id: '${{ needs.create-check-suite.outputs.check_suite_id }}',
+              status: 'completed',
+              conclusion: success ? 'success' : 'failure'
+            });
