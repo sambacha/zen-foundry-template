@@ -54,10 +54,11 @@ jobs:
           version: nightly
       
       - name: Install lcov
-        run: sudo apt-get update && sudo apt-get install -y lcov
-      
+        run: sudo apt-get update && sudo apt-get install -y lcov && lcov --version
+
+      # we install forge-std as the template does not contain git submodules for a reason
       - name: Install Dependencies
-        run: forge install
+        run: forge install foundry-rs/forge-std --no-commit && forge install
       
       - name: Build
         id: build
