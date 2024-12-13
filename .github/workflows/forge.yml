@@ -53,7 +53,7 @@ jobs:
         
       - name: Run Install
         id: install
-        run: forge install && forge install foundry-rs/forge-std
+        run: forge install && forge install foundry-rs/forge-std --no-commit
 
       - name: Run forge config --fix
         run: forge config --fix foundry.toml
