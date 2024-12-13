@@ -43,6 +43,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      
       - uses: extractions/setup-just@v2
       
       - name: Install Foundry
@@ -57,6 +58,9 @@ jobs:
       - name: Run forge config --fix
         run: forge config --fix foundry.toml
 
+      - name: Install diffutils
+        run: sudo apt-get install diffutils
+        
       - name: Check for changes
         id: check_changes
         run: |
@@ -79,8 +83,6 @@ jobs:
             ```diff
             $(git diff foundry.toml)
             ```
-      - name: Install diffutils
-        run: sudo apt-get install diffutils
         
       - name: Run Forge build
         run: just build
