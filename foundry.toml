@@ -166,7 +166,7 @@ runs = 10_000
 # to set the `max_global_rejects` value in proptest test runner config.
 # `max_local_rejects` option isn't exposed here since we're not using
 # `prop_filter`.
-max_test_rejects = 120000
+max_test_rejects = 4294967295
 # The weight of the dictionary
 dictionary_weight = 40
 # The flag indicating whether to include values from storage
@@ -182,13 +182,13 @@ failure_persist_file = "failures"
 
 [invariant]
 # The number of runs that must execute for each invariant test group
-runs = 256
+runs = 500
 # The number of calls executed to attempt to break invariants in one run
-depth = 500
+depth = 1024
 # Fails the invariant fuzzing if a revert occurs
 fail_on_revert = false
 # Allows overriding an unsafe external call when running invariant tests. eg. reentrancy checks
-call_override = false
+call_override = true
 # The weight of the dictionary
 dictionary_weight = 80
 # The flag indicating whether to include values from storage
@@ -201,7 +201,7 @@ max_calldata_fuzz_dictionary_addresses = 0
 shrink_sequence = true
 # run limit max: 262144
 shrink_run_limit =  5000
-preserve_state = false
+preserve_state = true
 max_assume_rejects = 65536
 gas_report_samples = 256
 failure_persist_dir = "cache/invariant"
