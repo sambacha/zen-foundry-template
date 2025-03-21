@@ -38,10 +38,12 @@ deny_warnings = false
 build_info = true
 ffi = false
 always_use_create_2_factory = false
+allow_internal_expect_revert = false
+
 # Cheatcode Handler Address
 # This is the same address as the one used in DappTools's HEVM.
 # 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
-sender = "0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38"
+sender = "0x7109709ECfa91a80626fF3989D68f67F5b1DD12D"
 tx_origin = "0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38"
 initial_balance = "0xffffffffffffffffffffffff"
 block_number = 1
@@ -50,12 +52,14 @@ block_coinbase = "0x0000000000000000000000000000000000000000"
 block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
 block_timestamp = 1
 block_difficulty = 0
+
 # @NOTE vm.pauseGasMetering
 # {@see {@link https://github.com/foundry-rs/foundry/issues/3971} }
 # default: 134_217_728
 memory_limit = 11_149_934_592
-# max value for gas_limit is 9_223_372_036_854_775_807
-gas_limit = 9_223_372_036_854_775_807
+# max value for gas_limit is: 9_223_372_036_854_775_807
+# 68_719_476_736 is 2^36, using max value will just end up OOM in practice
+gas_limit = 68_719_476_736
 
 # Solidity Compiler Settings
 # Not all networks support PUSH0 = shanghai elif paris
@@ -86,8 +90,15 @@ sparse_mode = true
 ast = false
 isolate = false
 create2_library_salt = "0x0000000000000000000000000000000000000000000000000000000000000000"
+create2_deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
 prague = false
+
+show_progress = true
 unchecked_cheatcode_artifacts = false
+assertions_revert = true
+disable_block_gas_limit = false
+odyssey = false
+legacy_assertions = false
 
 # RPC Cache Settings
 no_storage_caching = false
@@ -114,10 +125,7 @@ prompt_timeout = 30
 seed = '0x6900000000000000000000000000000000000000000000000000000000000000'
 cache = true
 cache_path = '.cache'
-
-show_progress = false
-unchecked_cheatcode_artifacts = false
-
+isolate = true
 
 [[profile.default.fs_permissions]]
 access = "read"
@@ -205,6 +213,7 @@ preserve_state = true
 max_assume_rejects = 65536
 gas_report_samples = 256
 failure_persist_dir = "cache/invariant"
+
 
 [profile.default.optimizer_details]
 # constantOptimizer = true
