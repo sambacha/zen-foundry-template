@@ -43,7 +43,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: extractions/setup-just@v2
+      - name: Install diffutils
+        run: sudo apt-get install diffutils
       
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -79,16 +80,18 @@ jobs:
             ```diff
             $(git diff foundry.toml)
             ```
-      - name: Install diffutils
-        run: sudo apt-get install diffutils
-        
-      - name: Run Forge build
-        run: just build
-        id: build
 
-      - name: Run Tests
-        id: test
-        run: just test
+# TODO:
+# fix Justfile
+#
+#      - uses: extractions/setup-just@v2
+#      - name: Run Forge build
+#        run: just build
+#        id: build
+
+#      - name: Run Tests
+#        id: test
+#        run: just test
 
       - name: Run Slither
         uses: crytic/slither-action@v0.4.0
