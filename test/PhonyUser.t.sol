@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import "forge-std/Test.sol";
 import "../src/PhonyUser.sol";
-import "../test_target.sol";
+import "./test_target.sol";
 
 /// @title PhonyUserTest - Test Suite for PhonyUser Contract
 contract PhonyUserTest is Test {
