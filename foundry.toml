@@ -140,16 +140,18 @@ endpoints = "all"
 line_length = 100
 # default 4
 tab_width = 2
-bracket_spacing = false
+# @note improves llm tokenization
+bracket_spacing = true
 int_types = "long"
 multiline_func_header = "attributes_first"
+hex_underscore = "remove"
 quote_style = "double"
 number_underscore = "thousands"
 single_line_statement_blocks = "preserve"
 override_spacing = false
 wrap_comments = true
 ignore = ['*.mutant.sol', '*.vendor.sol']
-contract_new_lines = false
+contract_new_lines = true
 # import statements are sorted alphabetically within their import groups.
 #  while preserving the relative ordering of the groups.
 sort_imports = false
