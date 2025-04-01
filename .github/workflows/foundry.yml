@@ -1,0 +1,165 @@
+name: Foundry Tests & Coverage
+
+on:
+  push:
+    paths: ['**.sol', '**.toml']
+    branches: [master, develop, trunk]
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+env:
+  FORCE_COLOR: 2
+  FOUNDRY_PROFILE: ci
+  FOUNDRY_FUZZ_RUNS: 1000
+  FOUNDRY_COVERAGE: true
+  FOUNDRY_COVERAGE_DIRECTORY: coverage-reports
+
+jobs:
+  test:
+    name: Foundry Test Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Create Check Run
+        id: create_check
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const check = await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Foundry Tests & Coverage',
+              head_sha: context.sha,
+              status: 'in_progress',
+              output: {
+                title: 'Test Run Started',
+                summary: 'Running Foundry tests with coverage...',
+                text: 'Initializing test environment'
+              }
+            });
+            return check.data.id;
+      
+      - uses: actions/checkout@v4
+      
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      
+      - name: Install lcov
+        run: sudo apt-get update && sudo apt-get install -y lcov && lcov --version
+
+      # we install forge-std as the template does not contain git submodules for a reason
+      - name: Install Dependencies
+        run: forge install foundry-rs/forge-std --no-commit && forge install
+      
+      - name: Build
+        id: build
+        run: |
+          forge build --sizes > build_output.txt
+          echo "build_output<<EOF" >> $GITHUB_OUTPUT
+          cat build_output.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Run Tests with Coverage
+        id: test
+        run: |
+          mkdir -p coverage-reports
+          forge coverage --report lcov --report summary > coverage_summary.txt
+          lcov --summary coverage-reports/lcov.info > lcov_summary.txt 2>&1
+          
+          {
+            echo "test_output<<EOF"
+            forge test -vv
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+          
+          {
+            echo "coverage_summary<<EOF"
+            cat coverage_summary.txt
+            echo -e "\nLCOV Summary:"
+            cat lcov_summary.txt
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+          
+          COVERAGE_PCT=$(cat lcov_summary.txt | grep "lines" | awk '{print $2}' | tr -d '%)')
+          echo "coverage_percentage=${COVERAGE_PCT}" >> $GITHUB_OUTPUT
+      
+      - name: Generate Coverage Report
+        id: coverage_report
+        run: |
+          genhtml coverage-reports/lcov.info -o coverage-reports/html
+          
+          {
+            echo "coverage_markdown<<EOF"
+            echo "## Coverage Report"
+            echo
+            echo "### Summary"
+            echo '```'
+            cat coverage_summary.txt
+            echo '```'
+            echo
+            echo "### Detailed Coverage Analysis"
+            echo '```'
+            cat lcov_summary.txt
+            echo '```'
+            echo
+            echo "### Coverage by Contract"
+            echo
+            find src -name "*.sol" -exec echo "#### {}" \; -exec forge coverage --report summary --contracts {} \;
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+      
+      - name: Update Check - Complete
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const buildSuccess = '${{ steps.build.outcome }}' === 'success';
+            const testSuccess = '${{ steps.test.outcome }}' === 'success';
+            const success = buildSuccess && testSuccess;
+            
+            const buildOutput = `${{ steps.build.outputs.build_output }}`;
+            const testOutput = `${{ steps.test.outputs.test_output }}`;
+            const coverageSummary = `${{ steps.test.outputs.coverage_summary }}`;
+            const coverageMarkdown = `${{ steps.coverage_report.outputs.coverage_markdown }}`;
+            const coveragePercentage = Number('${{ steps.test.outputs.coverage_percentage }}');
+            
+            let coverageStatus = '🔴';
+            if (coveragePercentage >= 90) coverageStatus = '🟢';
+            else if (coveragePercentage >= 75) coverageStatus = '🟡';
+            
+            await github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: '${{ steps.create_check.outputs.result }}',
+              status: 'completed',
+              conclusion: success ? 'success' : 'failure',
+              output: {
+                title: `${success ? '✅' : '❌'} Tests ${success ? 'Passed' : 'Failed'} | ${coverageStatus} Coverage: ${coveragePercentage}%`,
+                summary: coverageMarkdown,
+                text: '```\n' + 
+                      'Build Output:\n' + 
+                      buildOutput + 
+                      '\n\nTest Output:\n' + 
+                      testOutput +
+                      '\n\nCoverage Summary:\n' + 
+                      coverageSummary +
+                      '\n```'
+              }
+            });
+      
+      - name: Upload Coverage Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage-reports
+          retention-days: 14
